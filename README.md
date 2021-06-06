@@ -4,7 +4,6 @@
 
 ## To-Do:
 <ul>
-    <li> CLI implementation </li>
     <li> Flags? </li>
     <li> Write to file output </li>
 </ul>
