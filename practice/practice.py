@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-
+'''
 #import pprint # pretty-printing
 
 # static HTML page
@@ -25,41 +25,58 @@ print(soup.title.parent.name) # prints tag of parent structure (head)
 results = soup.find(class_='results-page container')
 
 print(results.prettify())
-
+'''
 ############################################
 
 # with authentification
-
-# create a Session object to persist the user session
-
-s = requests.Session()
-
-# getting the data we need
-# --> the URL to which the POST request (sign in) will be sent
-# --> the payload
-
-# --> go to login page
-# --> in developer tools, clear Network, login, then select 'session'
-# --> under Headers, can retrieve URL
-# --> right-click on session and select Copy as cURL (bash)
-# --> go to curl.trillworks.com and paste in request data
 
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-LOGIN=os.getenv('LOGIN')
-PASS=os.getenv('PASS')
+# loading credentials
+username = os.getenv('LOGIN')
+password = os.getenv('PASS')
 
-data = {
-  'commit': 'Sign in',
-  'authenticity_token': 'eG2s9x3wNfBu6f7c2LeEA9/oqz2btBQNnk3570c7Uf8U+3h+32VuC3hEj2DAKmRx+MCZTD1NeVIkjF896X8Cug==',
-  'login': LOGIN,
-  'password': PASS,
-}
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select, WebDriverWait
 
-URL = 'https://github.com/session'
+# initialize Chrome driver
+options = webdriver.ChromeOptions()
+options.add_experimental_option('excludeSwitches', ['enable-logging'])
+driver = webdriver.Chrome(executable_path='../chromedriver', options=options)
 
-response = s.post(URL, data=data)
-print(response.text)
+# heading to github login page
+URL = "https://github.com/login"
+driver.get(URL)
+
+# retrieving username field and sending username
+driver.find_element_by_id("login_field").send_keys(username)
+
+# retrieving password field and sending passowrd
+driver.find_element_by_id("password").send_keys(password)
+
+# clicking login button
+driver.find_element_by_name("commit").click()
+
+# dealing with incorrect credentials (verifying successful login)
+
+# waiting for page to load --> execute_script executes JS code
+# --> waits until the JS code returns True when page is loaded
+WebDriverWait(driver=driver, timeout=10).until(
+  lambda x : x.execute_script("return document.readyState === 'complete'")
+)
+
+error_message = "Incorrect username or password."
+
+errors = driver.find_element_by_class_name("flash-error")
+
+# if we find that error message within errors, then login is failed
+if error_message in errors.text:
+      print("Login failed.")
+else:
+      print("Login successful!")
+      
+driver.close()
