@@ -11,6 +11,7 @@
 <p> .env file </p>
 <ul>
     <li> Login credentials are retrieved from a .env file, stored in the same directory as the script </li>
+    <li> Create a .env file following the format below
     <li> Set LOGIN=1 for ID login or LOGIN=0 for email login
 </ul>
 
