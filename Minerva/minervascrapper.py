@@ -123,14 +123,18 @@ with open("Scrapped_Transcript.txt", "w") as file:
                     term_gpa = table[m + 1].text
                     file.write("Term GPA: " + term_gpa + '\n\n')
                     break
-                break
+                break               
             course_code = transcript_table[j].text
-            grade = transcript_table[j + 5].text
-            file.write(course_code + ": " + grade + "\n")
+            if "RW" in transcript_table[j - 1].text:
+                file.write(course_code + ": Not released.\n")
+            else:
+                grade = transcript_table[j + 5].text
+                file.write(course_code + ": " + grade + "\n")
             j += 11 # move to next course code
         i = j
         k += 1
         if k >= len(term):
             break
-
+        
+print("Scrapping complete! Please navigate to Scrapped_Transcript.txt to see results.")
 driver.close()
