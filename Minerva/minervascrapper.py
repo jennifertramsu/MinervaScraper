@@ -105,6 +105,15 @@ for i in range(len(transcript_table)):
     j = i + 5
     while "Winter" not in transcript_table[j].text and "Fall" not in transcript_table[j].text and "Summer" not in transcript_table[j].text: # loop per line
         if "Advanced" in transcript_table[j].text:
+            # grab term gpa
+            l = j
+            table = transcript_table[l].find_elements_by_class_name("dedefault")
+            for m in range(len(table)):
+                while "TERM GPA" not in table[m].text:
+                    m += 1
+                term_gpa = table[m + 1].text
+                print("Term GPA: " + term_gpa + '\n')
+                break
             break
         course_code = transcript_table[j].text
         grade = transcript_table[j + 5].text
