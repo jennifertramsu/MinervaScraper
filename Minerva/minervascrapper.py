@@ -23,7 +23,6 @@ else:
     username = os.getenv('MCGILLUSERNAME')
     password = os.getenv('MCGILLPASSWORD') 
 
-
 # initialize Chrome driver
 options = webdriver.ChromeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
@@ -64,8 +63,6 @@ WebDriverWait(driver=driver, timeout=10).until(
   lambda x : x.execute_script("return document.readyState === 'complete'")
 )
 
-error_message = "Invalid McGill ID or PIN."
-
 try:
     errors = driver.find_element_by_name("web_stop")
     print("Login failed.")
@@ -74,7 +71,6 @@ except: # login successful
     print("Login successful!")   
     
 # navigate to Unofficial Transcript
-
 main = 'https://horizon.mcgill.ca/pban1/twbkwbis.P_GenMenu?name=bmenu.P_StuMainMnu'
 records = 'https://horizon.mcgill.ca/pban1/twbkwbis.P_GenMenu?name=bmenu.P_AdminMnu'
 transcript = 'https://horizon.mcgill.ca/pban1/bzsktran.P_Display_Form?user_type=S&tran_type=V'
@@ -86,10 +82,6 @@ for link in navigation:
     WebDriverWait(driver=driver, timeout=10).until(lambda x : x.execute_script("return document.readyState === 'complete'"))
 
 # scrape for grades
-# ideally, use from command-line (F2019, W2019, etc.)
-# --> option to choose term?
-# include CGPA
-
 transcript_table = driver.find_elements_by_class_name("dedefault")
 
 # CLI things
@@ -113,31 +105,32 @@ for arg in arguments:
     
 k = 0
 
-for i in range(len(transcript_table)):
-    if (term[k] not in transcript_table[i].text) or (year[k] not in transcript_table[i].text):
-        continue
-    print(term[k], year[k])
-    # in block of desired term and year
-    j = i + 5
-    while "Winter" not in transcript_table[j].text and "Fall" not in transcript_table[j].text and "Summer" not in transcript_table[j].text: # loop per line
-        if "Advanced" in transcript_table[j].text:
-            # grab term gpa
-            l = j
-            table = transcript_table[l].find_elements_by_class_name("dedefault")
-            for m in range(len(table)):
-                while "TERM GPA" not in table[m].text:
-                    m += 1
-                term_gpa = table[m + 1].text
-                print("Term GPA: " + term_gpa + '\n')
+with open("Scrapped_Transcript.txt", "w") as file:
+    for i in range(len(transcript_table)):
+        if (term[k] not in transcript_table[i].text) or (year[k] not in transcript_table[i].text):
+            continue
+        file.write(term[k] + " " + year[k] + "\n")
+        # in block of desired term and year
+        j = i + 5
+        while "Winter" not in transcript_table[j].text and "Fall" not in transcript_table[j].text and "Summer" not in transcript_table[j].text: # loop per line
+            if "Advanced" in transcript_table[j].text:
+                # grab term gpa
+                l = j
+                table = transcript_table[l].find_elements_by_class_name("dedefault")
+                for m in range(len(table)):
+                    while "TERM GPA" not in table[m].text:
+                        m += 1
+                    term_gpa = table[m + 1].text
+                    file.write("Term GPA: " + term_gpa + '\n\n')
+                    break
                 break
+            course_code = transcript_table[j].text
+            grade = transcript_table[j + 5].text
+            file.write(course_code + ": " + grade + "\n")
+            j += 11 # move to next course code
+        i = j
+        k += 1
+        if k >= len(term):
             break
-        course_code = transcript_table[j].text
-        grade = transcript_table[j + 5].text
-        print(course_code, grade)
-        j += 11 # move to next course code
-    i = j
-    k += 1
-    if k >= len(term):
-        break
 
 driver.close()

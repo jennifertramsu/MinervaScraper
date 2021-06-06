@@ -5,5 +5,5 @@
 ## To-Do:
 <ul>
     <li> Flags? </li>
-    <li> Write to file output </li>
+    <li> Deal with RW grades </li>
 </ul>
