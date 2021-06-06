@@ -1,9 +1,9 @@
 # auth things
+import sys
 import os
 from dotenv import load_dotenv
 
 # scrappers 
-from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -92,9 +92,25 @@ for link in navigation:
 
 transcript_table = driver.find_elements_by_class_name("dedefault")
 
-# test
-term, year = ['Fall', 'Winter'], ['2019', '2021']
+# CLI things
+terms = {
+    'F' : 'Fall',
+    'W' : 'Winter', 
+    'S' : 'Summer'
+}
 
+term = []
+year = []
+
+arguments = sys.argv[1:]
+
+# sort by date W < S < F for a given year
+arguments = sorted(sorted(arguments, key=lambda x : x[0], reverse=True), key=lambda x : int(x[1:]))
+
+for arg in arguments:
+    term.append(terms[arg[0].upper()])
+    year.append(arg[1:])
+    
 k = 0
 
 for i in range(len(transcript_table)):
