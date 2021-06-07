@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-# loading credentials
+# loading Minerva credentials
 load_dotenv()
 
 # choosing login method --> 1 : ID login, 0 : email login

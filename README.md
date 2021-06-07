@@ -28,7 +28,6 @@
             MCGILLUSERNAME={insert McGill email here}
             MCGILLPASSWORD={insert password here}
 
-
 </html>
 
 <p> To use from the command-line: </p>
