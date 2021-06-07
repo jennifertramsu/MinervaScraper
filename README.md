@@ -43,6 +43,7 @@
             <li> W/w --> Winter </li>
         </ul>
         <li> YEAR has form yyyy </li>
+        <li> e.g. f2019 and F2019 are equivalent for Fall term, 2019 </li>
     </ul>
     <li> Output is written to output file Scrapped_Transcript.txt </li>
 </ul>
