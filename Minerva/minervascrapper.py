@@ -109,9 +109,11 @@ with open("Scrapped_Transcript.txt", "w") as file:
     for i in range(len(transcript_table)):
         if (term[k] not in transcript_table[i].text) or (year[k] not in transcript_table[i].text):
             continue
-        file.write(term[k] + " " + year[k] + "\n")
+        file.write("\n" + term[k] + " " + year[k] + "\n")
         # in block of desired term and year
         j = i + 5
+        if j >= len(transcript_table):
+            break
         while "Winter" not in transcript_table[j].text and "Fall" not in transcript_table[j].text and "Summer" not in transcript_table[j].text: # loop per line
             if "Advanced" in transcript_table[j].text:
                 # grab term gpa
@@ -121,7 +123,7 @@ with open("Scrapped_Transcript.txt", "w") as file:
                     while "TERM GPA" not in table[m].text:
                         m += 1
                     term_gpa = table[m + 1].text
-                    file.write("Term GPA: " + term_gpa + '\n\n')
+                    file.write("Term GPA: " + term_gpa + '\n')
                     break
                 break               
             course_code = transcript_table[j].text
@@ -131,6 +133,8 @@ with open("Scrapped_Transcript.txt", "w") as file:
                 grade = transcript_table[j + 5].text
                 file.write(course_code + ": " + grade + "\n")
             j += 11 # move to next course code
+            if j >= len(transcript_table):
+                break
         i = j
         k += 1
         if k >= len(term):
