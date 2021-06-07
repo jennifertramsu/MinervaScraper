@@ -106,6 +106,7 @@ for arg in arguments:
 k = 0
 
 with open("Scrapped_Transcript.txt", "w") as file:
+    file.write("Scrapped Transcript for {}".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
     for i in range(len(transcript_table)):
         if (term[k] not in transcript_table[i].text) or (year[k] not in transcript_table[i].text):
             continue
