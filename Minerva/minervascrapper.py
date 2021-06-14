@@ -103,9 +103,8 @@ for arg in arguments:
     term.append(terms[arg[0].upper()])
     year.append(arg[1:])
     
-k = 0
-
 with open("Scrapped_Transcript.txt", "w") as file:
+    k = 0
     file.write("Scrapped Transcript for {}\n".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
     file.write("\nTerm\tCourse Code\tGrade\tCourse Average\n")
     for i in range(len(transcript_table)):
