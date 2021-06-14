@@ -106,7 +106,8 @@ for arg in arguments:
 k = 0
 
 with open("Scrapped_Transcript.txt", "w") as file:
-    file.write("Scrapped Transcript for {}".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
+    file.write("Scrapped Transcript for {}\n".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
+    file.write("\nTerm\tCourse Code\tGrade\tCourse Average\n")
     for i in range(len(transcript_table)):
         if (term[k] not in transcript_table[i].text) or (year[k] not in transcript_table[i].text):
             continue
@@ -129,10 +130,14 @@ with open("Scrapped_Transcript.txt", "w") as file:
                 break               
             course_code = transcript_table[j].text
             if "RW" in transcript_table[j - 1].text:
-                file.write(course_code + ": Not released.\n")
+                file.write("\t\t" + course_code + ": Not released.\n")
             else:
                 grade = transcript_table[j + 5].text
-                file.write(course_code + ": " + grade + "\n")
+                course_avg = transcript_table[j + 9].text
+                if len(course_avg.strip()) == 0:
+                    file.write("\t\t" + course_code + ":\t" + grade + "\t\tNot released.\n")
+                else:
+                    file.write("\t\t" + course_code + ":\t" + grade + "\t\t" + course_avg + "\n")
             j += 11 # move to next course code
             if j >= len(transcript_table):
                 break
