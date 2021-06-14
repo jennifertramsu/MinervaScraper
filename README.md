@@ -18,23 +18,41 @@
 <html>
     <head>
               
-            # .env
+        # .env
 
-            LOGIN=1
+        LOGIN=1
 
-            MCGILLID={insert ID here}
-            MINERVAPIN={insert PIN here}
+        MCGILLID={insert ID here}
+        MINERVAPIN={insert PIN here}
 
-            MCGILLUSERNAME={insert McGill email here}
-            MCGILLPASSWORD={insert password here}
+        MCGILLUSERNAME={insert McGill email here}
+        MCGILLPASSWORD={insert password here}
 
 </html>
 
 <p> To use from the command-line: </p>
 <ul>
     <li> Navigate to the directory Minerva </li>
+<html>
+<head>
+              
+    cd Minerva
+
+</html>
     <li> Run the command python minervascrapper.py with no arguments to scrape for all terms </li>
+<html>
+<head>
+              
+    python minervascrapper.py
+
+</html>
     <li> Run the command python minervascrapper.py ARG1 ARG2 etc... to scrape for specified terms </li>
+<html>
+<head>
+              
+    python minervascrapper.py f2019 w2020 s2020 F2020
+
+</html>
     <li> Args take the form TERM + YEAR, case-insensitive, time-independent </li>
     <ul>
         <li> TERM is represented by a single letter: </li>
@@ -46,9 +64,14 @@
         <li> YEAR has form yyyy </li>
         <li> e.g. f2019 and F2019 are equivalent for Fall term, 2019 </li>
     </ul>
-    <li> Output is written to output file Scrapped_Transcript.txt </li>
+    <li> Output is written to output file Scrapped_Transcript_TERM1_TERM2.txt if terms are specified, or to Scrapped_Transcript_All_Terms.txt if none are specified </li>
 </ul>
 </p>
+<p> Flags: </p>
+<ul> 
+    <li> -h or --help (IN PROGRESS) </li>
+    <li> -u or --update (IN PROGRESS) </li>
+</ul>
 
 ## To-Do:
 <ul>
