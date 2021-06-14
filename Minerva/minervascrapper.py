@@ -1,6 +1,7 @@
 # auth things
 import sys
 import os
+import getopt
 from dotenv import load_dotenv
 
 # scrappers 
@@ -8,6 +9,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+# import custom function
+from scrapper import minervascrape
 
 # loading Minerva credentials
 load_dotenv()
@@ -95,73 +99,39 @@ term = []
 year = []
 
 arguments = sys.argv[1:]
+short_options = "u"
+long_options = ["update"]
 
-if len(arguments) != 0:
+# validating command-line flags and arguments
+try:
+      args, values = getopt.getopt(arguments, short_options, long_options)
+except getopt.error as e:
+      print(str(e))
+      sys.exit(2)
+
+if len(values) != 0:
     # sort by date W < S < F for a given year
-    arguments = sorted(sorted(arguments, key=lambda x : x[0], reverse=True), key=lambda x : int(x[1:]))
+    values = sorted(sorted(values, key=lambda x : x[0], reverse=True), key=lambda x : int(x[1:]))
 
-    for arg in arguments:
+    for arg in values:
         term.append(terms[arg[0].upper()])
         year.append(arg[1:])
-    
-with open("Scrapped_Transcript.txt", "w") as file:
-    k = 0
-    if len(arguments) != 0:
-        file.write("Scrapped Transcript for {}\n".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
+
+if len(args) == 0:
+    if len(values) != 0:
+        filename = "Scrapped_Transcript_{}".format("_".join([term[i] + " " + year[i] for i in range(len(term))]))
+        print("Beginning scrapping for {}...\n".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
+        with open(filename + ".txt", "w") as file:
+            minervascrape(values, term, year, transcript_table, terms, file)
+            print("Scrapping complete! Please navigate to " + filename + ".txt to see results.")
     else:
-        file.write("Scrapped Transcript for All Terms\n")
-    file.write("\nTerm\tCourse Code\tGrade\tCourse Average\n")
-    for i in range(len(transcript_table)):
-        if len(arguments) != 0:
-            if (term[k] not in transcript_table[i].text) or (year[k] not in transcript_table[i].text):
-                continue
-            else:
-                file.write("\n" + term[k] + " " + year[k] + "\n")
-                print("Scrapping " + term[k] + " " + year[k] + "...\n")
-        else: # no arguments, scrape all terms
-            if (terms['F'] not in transcript_table[i].text) and (terms['W'] not in transcript_table[i].text) and (terms['S'] not in transcript_table[i].text):
-                continue
-            else:
-                sem = transcript_table[i].text.split()
-                if len(sem) == 2:
-                    file.write("\n" + sem[0] + " " + sem[1] + "\n")
-                    print("Scrapping " + sem[0] + " " + sem[1] + "...\n")
-                else:
-                    continue
-        # in block of desired term and year
-        j = i + 5
-        if j >= len(transcript_table):
-            break
-        while "Winter" not in transcript_table[j].text and "Fall" not in transcript_table[j].text and "Summer" not in transcript_table[j].text: # loop per line
-            if "Advanced" in transcript_table[j].text:
-                # grab term gpa
-                l = j
-                table = transcript_table[l].find_elements_by_class_name("dedefault")
-                for m in range(len(table)):
-                    while "TERM GPA" not in table[m].text:
-                        m += 1
-                    term_gpa = table[m + 1].text
-                    file.write("Term GPA: " + term_gpa + '\n')
-                    break
-                break               
-            course_code = transcript_table[j].text
-            if "RW" in transcript_table[j - 1].text:
-                file.write("\t\t" + course_code + ": Not released.\n")
-            else:
-                grade = transcript_table[j + 5].text
-                course_avg = transcript_table[j + 9].text
-                if len(course_avg.strip()) == 0:
-                    file.write("\t\t" + course_code + ":\t" + grade + "\t\tNot released.\n")
-                else:
-                    file.write("\t\t" + course_code + ":\t" + grade + "\t\t" + course_avg + "\n")
-            j += 11 # move to next course code
-            if j >= len(transcript_table):
-                break
-        i = j
-        if len(arguments) != 0:
-            k += 1
-            if k >= len(term):
-                break
-        
-print("Scrapping complete! Please navigate to Scrapped_Transcript.txt to see results.")
+        print("Beginning scrapping for all terms...\n")
+        with open("Scrapped_Transcript_All_Terms.txt", "w") as file:
+            minervascrape(values, term, year, transcript_table, terms, file)
+            print("Scrapping complete! Please navigate to Scrapped_Transcript_All_Terms.txt to see results.")
+else:
+    for a, v in args:
+        if a in ("-u", "--update"):
+            print("Starting update...")
+    
 driver.close()

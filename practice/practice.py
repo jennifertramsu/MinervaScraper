@@ -25,7 +25,7 @@ print(soup.title.parent.name) # prints tag of parent structure (head)
 results = soup.find(class_='results-page container')
 
 print(results.prettify())
-'''
+
 ############################################
 
 # with authentification
@@ -80,3 +80,31 @@ else:
       print("Login successful!")
       
 driver.close()
+'''
+
+#####################################
+
+# flag arguments in command-line
+
+import sys
+import getopt
+
+arguments = sys.argv[1:]
+
+short_options = "u"
+
+long_options = ["update"]
+
+try:
+      args, values = getopt.getopt(arguments, short_options, long_options)
+except getopt.error as e:
+      print(str(e))
+      sys.exit(2)
+      
+print(args, values)
+      
+for a, v in args:
+      if a in ("-u", "--update"):
+            print("Starting update...")
+            
+            
