@@ -86,13 +86,13 @@ def load_page():
     
     return driver, transcript_table
 
-def minervascrape(arguments, term, year, transcript_table, terms, file):
+def minervascrape(values, term, year, transcript_table, terms, file):
     """ This is the main scrapper function. Given the inputted terms (optional), the function will scrape through the user's
     unofficial transcript on Minerva and write the output (Course Code, Grade, Course Average, Term GPA) to a text file.
     
     Parameters
     ----------
-    arguments : list
+    values : list
         List of system arguments (term + year) inputted through the command-line. If no arguments are given, 
         function will scrape for all terms.
     
@@ -118,13 +118,13 @@ def minervascrape(arguments, term, year, transcript_table, terms, file):
     """
     
     k = 0
-    if len(arguments) != 0:
+    if len(values) != 0:
         file.write("Scrapped Transcript for {}\n".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
     else:
         file.write("Scrapped Transcript for All Terms\n")
     file.write("\nTerm\tCourse Code\tGrade\tCourse Average\n")
     for i in range(len(transcript_table)):
-        if len(arguments) != 0:
+        if len(values) != 0:
             if (term[k] not in transcript_table[i].text) or (year[k] not in transcript_table[i].text):
                 continue
             else:
@@ -170,24 +170,50 @@ def minervascrape(arguments, term, year, transcript_table, terms, file):
             if j >= len(transcript_table):
                 break
         i = j
-        if len(arguments) != 0:
+        if len(values) != 0:
             k += 1
             if k >= len(term):
                 break
 
-def minervaupdate():
+def minervaupdate(values, term, year, transcript_table, terms):
     """ If flagged through the command-line, this function 
     
+    Parameters
+    ----------
+    values : list
+        List of system arguments (term + year) inputted through the command-line. If no arguments are given, 
+        function will scrape for all terms.
+    
+    term : list
+        List of specified terms represented by the first letter ('f', 'w', 's').
+    
+    year : list
+        List of years corresponding to the specified terms. 
+        
+    transcript_table : list
+        List of Selenium.element objects that contains all the text to be parsed and scrapped.
+        
+    terms : dict
+        Dictionary that maps the elements in term to the corresponding term name ('Fall', 'Winter', 'Summer').
+          
     Returns
     -------
-    bool 
+    change : bool 
     """
     
     with open("Updated_Scrapped_Transcript.txt", "w") as file:  
-        minervascrape(arguments, term, year, transcript_table, terms, file)
+        minervascrape(values, term, year, transcript_table, terms, file)
     
-    os.system("diff Scrapped_Transcript.txt Updated_Scrapped_Transcript.txt > diff.txt")
+    os.system("diff Scrapped_Transcript_All_Terms.txt Updated_Scrapped_Transcript.txt > diff.txt")
     
-    yield os.path.getsize("diff.txt") != 0 # not empty file
+    if os.path.getsize("diff.txt") != 0: # not empty file
+        change = True
+        # replace old file with new
+        os.system("cp Updated_Scrapped_Transcript.txt Scrapped_Transcript_All_Terms.txt")
+    else:
+        change = False
     
     os.remove("diff.txt")
+    os.remove("Updated_Scrapped_Transcript.txt")
+    
+    return change

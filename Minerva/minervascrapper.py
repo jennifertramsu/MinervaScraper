@@ -2,7 +2,7 @@
 import sys
 import getopt
 
-# import custom function
+# import custom functions
 from scrapper import *
 
 arguments = sys.argv[1:]
@@ -53,4 +53,11 @@ else:
         if a in ("-h", "--help"):
             print(minervascrape.__doc__)
         elif a in ("-u", "--update"):
-            print("Starting update...")
+            print("Starting update...\n")
+            driver, transcript_table = load_page()
+            change = minervaupdate(values, term, year, transcript_table, terms)
+            if change:
+                print("Transcript updated!")
+            else:
+                print("No change...")
+            driver.close()
