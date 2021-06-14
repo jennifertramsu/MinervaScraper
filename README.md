@@ -33,7 +33,8 @@
 <p> To use from the command-line: </p>
 <ul>
     <li> Navigate to the directory Minerva </li>
-    <li> Run the command python minervascrapper.py ARG1 ARG2 etc... </li>
+    <li> Run the command python minervascrapper.py with no arguments to scrape for all terms </li>
+    <li> Run the command python minervascrapper.py ARG1 ARG2 etc... to scrape for specified terms </li>
     <li> Args take the form TERM + YEAR, case-insensitive, time-independent </li>
     <ul>
         <li> TERM is represented by a single letter: </li>
@@ -51,6 +52,5 @@
 
 ## To-Do:
 <ul>
-    <li> Flags? </li>
     <li> Notification for when grades are released </li>
 </ul>
