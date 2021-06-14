@@ -65,10 +65,10 @@ WebDriverWait(driver=driver, timeout=10).until(
 
 try:
     errors = driver.find_element_by_name("web_stop")
-    print("Login failed.")
+    print("Login failed.\n")
     
 except: # login successful
-    print("Login successful!")   
+    print("Login successful!\n")   
     
 # navigate to Unofficial Transcript
 main = 'https://horizon.mcgill.ca/pban1/twbkwbis.P_GenMenu?name=bmenu.P_StuMainMnu'
@@ -96,21 +96,38 @@ year = []
 
 arguments = sys.argv[1:]
 
-# sort by date W < S < F for a given year
-arguments = sorted(sorted(arguments, key=lambda x : x[0], reverse=True), key=lambda x : int(x[1:]))
+if len(arguments) != 0:
+    # sort by date W < S < F for a given year
+    arguments = sorted(sorted(arguments, key=lambda x : x[0], reverse=True), key=lambda x : int(x[1:]))
 
-for arg in arguments:
-    term.append(terms[arg[0].upper()])
-    year.append(arg[1:])
+    for arg in arguments:
+        term.append(terms[arg[0].upper()])
+        year.append(arg[1:])
     
 with open("Scrapped_Transcript.txt", "w") as file:
     k = 0
-    file.write("Scrapped Transcript for {}\n".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
+    if len(arguments) != 0:
+        file.write("Scrapped Transcript for {}\n".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
+    else:
+        file.write("Scrapped Transcript for All Terms\n")
     file.write("\nTerm\tCourse Code\tGrade\tCourse Average\n")
     for i in range(len(transcript_table)):
-        if (term[k] not in transcript_table[i].text) or (year[k] not in transcript_table[i].text):
-            continue
-        file.write("\n" + term[k] + " " + year[k] + "\n")
+        if len(arguments) != 0:
+            if (term[k] not in transcript_table[i].text) or (year[k] not in transcript_table[i].text):
+                continue
+            else:
+                file.write("\n" + term[k] + " " + year[k] + "\n")
+                print("Scrapping " + term[k] + " " + year[k] + "...\n")
+        else: # no arguments, scrape all terms
+            if (terms['F'] not in transcript_table[i].text) and (terms['W'] not in transcript_table[i].text) and (terms['S'] not in transcript_table[i].text):
+                continue
+            else:
+                sem = transcript_table[i].text.split()
+                if len(sem) == 2:
+                    file.write("\n" + sem[0] + " " + sem[1] + "\n")
+                    print("Scrapping " + sem[0] + " " + sem[1] + "...\n")
+                else:
+                    continue
         # in block of desired term and year
         j = i + 5
         if j >= len(transcript_table):
@@ -141,9 +158,10 @@ with open("Scrapped_Transcript.txt", "w") as file:
             if j >= len(transcript_table):
                 break
         i = j
-        k += 1
-        if k >= len(term):
-            break
+        if len(arguments) != 0:
+            k += 1
+            if k >= len(term):
+                break
         
 print("Scrapping complete! Please navigate to Scrapped_Transcript.txt to see results.")
 driver.close()
