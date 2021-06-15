@@ -1,4 +1,4 @@
-# MinervaScrapper
+# Minervascraper
 
 <p> Because it takes effort to log onto Minerva and navigate through the different webpages to see my grades only to realize that they haven't been uploaded yet. </p>
 
@@ -39,18 +39,18 @@
     cd Minerva
 
 </html>
-    <li> Run the command python minervascrapper.py with no arguments to scrape for all terms </li>
+    <li> Run the command python minervascraper.py with no arguments to scrape for all terms </li>
 <html>
 <head>
               
-    python minervascrapper.py
+    python minervascraper.py
 
 </html>
-    <li> Run the command python minervascrapper.py ARG1 ARG2 etc... to scrape for specified terms </li>
+    <li> Run the command python minervascraper.py ARG1 ARG2 etc... to scrape for specified terms </li>
 <html>
 <head>
               
-    python minervascrapper.py f2019 w2020 s2020 F2020
+    python minervascraper.py f2019 w2020 s2020 F2020
 
 </html>
     <li> Args take the form TERM + YEAR, case-insensitive, time-independent </li>
@@ -64,7 +64,7 @@
         <li> YEAR has form yyyy </li>
         <li> e.g. f2019 and F2019 are equivalent for Fall term, 2019 </li>
     </ul>
-    <li> Output is written to output file Scrapped_Transcript_TERM1_TERM2.txt if terms are specified, or to Scrapped_Transcript_All_Terms.txt if none are specified </li>
+    <li> Output is written to output file scraped_Transcript_TERM1_TERM2.txt if terms are specified, or to scraped_Transcript_All_Terms.txt if none are specified </li>
 </ul>
 </p>
 <p> Flags: </p>
