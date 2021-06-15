@@ -1,4 +1,4 @@
 .env
 chromedriver.exe
-*Scrapped_Transcript*.txt
+*Scraped_Transcript*.txt
 __pycache__
