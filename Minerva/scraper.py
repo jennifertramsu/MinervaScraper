@@ -32,6 +32,7 @@ def load_page():
     # initialize Chrome driver
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    options.headless = True
     driver = webdriver.Chrome(executable_path='../chromedriver', options=options)
 
     # heading to Minerva login page

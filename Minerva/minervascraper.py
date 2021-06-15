@@ -57,8 +57,8 @@ else:
             driver, transcript_table = load_page()
             change = minervaupdate(values, term, year, transcript_table, terms)
             if change:
-                print("Transcript updated!")
+                print("Transcript updated!\n")
                 send_email()
             else:
-                print("No change...")
+                print("No change...\n")
             driver.close()
