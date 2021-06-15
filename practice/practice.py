@@ -80,7 +80,6 @@ else:
       print("Login successful!")
       
 driver.close()
-'''
 
 #####################################
 
@@ -106,5 +105,41 @@ print(args, values)
 for a, v in args:
       if a in ("-u", "--update"):
             print("Starting update...")
-            
-            
+'''
+
+######################################
+
+# email
+import smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from jinja2 import Template
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+port = 465
+
+smtp_server = "smtp.gmail.com"
+
+sender_email = os.getenv("EMAIL")
+receiver_email = "jennifer.tramsu@gmail.com"
+sender_email_password = os.getenv("EMAILPASS")
+
+message = MIMEMultipart("alternative")
+message["Subject"] = "Test"
+message["From"] = sender_email
+message["To"] = receiver_email
+
+text = open("../Minerva/Scrapped_Transcript_All_Terms.txt").read()
+
+message.attach(MIMEText(text, 'plain'))
+
+context = ssl.create_default_context()
+
+with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+      server.login(sender_email, sender_email_password)
+      server.sendmail(
+            sender_email, receiver_email, message.as_string()
+      )

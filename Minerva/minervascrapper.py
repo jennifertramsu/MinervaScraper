@@ -58,6 +58,7 @@ else:
             change = minervaupdate(values, term, year, transcript_table, terms)
             if change:
                 print("Transcript updated!")
+                # email things
             else:
                 print("No change...")
             driver.close()

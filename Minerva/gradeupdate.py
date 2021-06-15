@@ -27,4 +27,8 @@ if not os.path.exists("Scrapped_Transcript_All_Terms.txt"):
 else:
     print("Scrapped_Transcript_All_Terms.txt was found!\n")
 
-    os.system("python minervascrapper.py -u")
+print("Starting configuration for scheduler!")
+
+# set up times for script to call scrapper
+
+os.system("python minervascrapper.py -u")
