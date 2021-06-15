@@ -3,7 +3,7 @@ import sys
 import getopt
 
 # import custom functions
-from scrapper import *
+from scraper import *
 
 arguments = sys.argv[1:]
 short_options = "uh"
@@ -37,16 +37,16 @@ if len(values) != 0:
 if len(args) == 0: # no flags, proceed as usual
     driver, transcript_table = load_page()
     if len(values) != 0: # terms specified
-        filename = "Scrapped_Transcript_{}".format("_".join([term[i] + " " + year[i] for i in range(len(term))]))
-        print("Beginning scrapping for {}...\n".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
+        filename = "Scraped_Transcript_{}".format("_".join([term[i] + " " + year[i] for i in range(len(term))]))
+        print("Beginning scraping for {}...\n".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
         with open(filename + ".txt", "w") as file:
             minervascrape(values, term, year, transcript_table, terms, file)
-            print("Scrapping complete! Please navigate to " + filename + ".txt to see results.")
+            print("Scraping complete! Please navigate to " + filename + ".txt to see results.")
     else: # no terms, scrape for all terms
-        print("Beginning scrapping for all terms...\n")
-        with open("Scrapped_Transcript_All_Terms.txt", "w") as file:
+        print("Beginning scraping for all terms...\n")
+        with open("Scraped_Transcript_All_Terms.txt", "w") as file:
             minervascrape(values, term, year, transcript_table, terms, file)
-            print("Scrapping complete! Please navigate to Scrapped_Transcript_All_Terms.txt to see results.")
+            print("Scraping complete! Please navigate to Scraped_Transcript_All_Terms.txt to see results.")
     driver.close()
 else:
     for a, v in args:
@@ -58,7 +58,7 @@ else:
             change = minervaupdate(values, term, year, transcript_table, terms)
             if change:
                 print("Transcript updated!")
-                # email things
+                send_email()
             else:
                 print("No change...")
             driver.close()

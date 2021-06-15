@@ -15,20 +15,20 @@ from crontab import CronTab
 # uses Scrapped_Transcipt_All_Terms.txt as a baseline
 
 print("Starting configuration for Minerva grade update!\n")
-print("Checking whether Scrapped_Transcript_All_Terms.txt exists...\n")
+print("Checking whether Scraped_Transcript_All_Terms.txt exists...\n")
 
-if not os.path.exists("Scrapped_Transcript_All_Terms.txt"):
-    print("Scrapped_Transcript_All_Terms.txt could not be found!\n")
+if not os.path.exists("Scraped_Transcript_All_Terms.txt"):
+    print("Scraped_Transcript_All_Terms.txt could not be found!\n")
     
     try:
-        os.system("python minervascrapper.py")
+        os.system("python minervascraper.py")
     except:
-        os.remove("Scrapped_Transcript_All_Terms.txt")
+        os.remove("Scraped_Transcript_All_Terms.txt")
 else:
-    print("Scrapped_Transcript_All_Terms.txt was found!\n")
+    print("Scraped_Transcript_All_Terms.txt was found!\n")
 
 print("Starting configuration for scheduler!")
 
-# set up times for script to call scrapper
+# set up times for script to call scraper
 
-os.system("python minervascrapper.py -u")
+os.system("python minervascraper.py -u")

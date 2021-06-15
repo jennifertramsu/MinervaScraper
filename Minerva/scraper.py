@@ -1,13 +1,19 @@
 import os
 from dotenv import load_dotenv
 
-# scrappers 
+# scrapers 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+# email stuff
+import smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 def load_page():
+    """ Loads the unofficial transcript in Minerva using Selenium and returns the transcript_table which will be used for scraping. """
     
     # loading Minerva credentials
     load_dotenv()
@@ -87,7 +93,7 @@ def load_page():
     return driver, transcript_table
 
 def minervascrape(values, term, year, transcript_table, terms, file):
-    """ This is the main scrapper function. Given the inputted terms (optional), the function will scrape through the user's
+    """ This is the main scraper function. Given the inputted terms (optional), the function will scrape through the user's
     unofficial transcript on Minerva and write the output (Course Code, Grade, Course Average, Term GPA) to a text file.
     
     Parameters
@@ -103,7 +109,7 @@ def minervascrape(values, term, year, transcript_table, terms, file):
         List of years corresponding to the specified terms. 
         
     transcript_table : list
-        List of Selenium.element objects that contains all the text to be parsed and scrapped.
+        List of Selenium.element objects that contains all the text to be parsed and scraped.
         
     terms : dict
         Dictionary that maps the elements in term to the corresponding term name ('Fall', 'Winter', 'Summer').
@@ -114,14 +120,14 @@ def minervascrape(values, term, year, transcript_table, terms, file):
     Examples
     --------
     >> import os
-    >> os.system("python minervascrapper.py f2019 w2020 S2020")
+    >> os.system("python minervascraper.py f2019 w2020 S2020")
     """
     
     k = 0
     if len(values) != 0:
-        file.write("Scrapped Transcript for {}\n".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
+        file.write("Scraped Transcript for {}\n".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
     else:
-        file.write("Scrapped Transcript for All Terms\n")
+        file.write("Scraped Transcript for All Terms\n")
     file.write("\nTerm\tCourse Code\tGrade\tCourse Average\n")
     for i in range(len(transcript_table)):
         if len(values) != 0:
@@ -129,7 +135,7 @@ def minervascrape(values, term, year, transcript_table, terms, file):
                 continue
             else:
                 file.write("\n" + term[k] + " " + year[k] + "\n")
-                print("Scrapping " + term[k] + " " + year[k] + "...\n")
+                print("Scraping " + term[k] + " " + year[k] + "...\n")
         else: # no arguments, scrape all terms
             if (terms['F'] not in transcript_table[i].text) and (terms['W'] not in transcript_table[i].text) and (terms['S'] not in transcript_table[i].text):
                 continue
@@ -137,7 +143,7 @@ def minervascrape(values, term, year, transcript_table, terms, file):
                 sem = transcript_table[i].text.split()
                 if len(sem) == 2:
                     file.write("\n" + sem[0] + " " + sem[1] + "\n")
-                    print("Scrapping " + sem[0] + " " + sem[1] + "...\n")
+                    print("Scraping " + sem[0] + " " + sem[1] + "...\n")
                 else:
                     continue
         # in block of desired term and year
@@ -176,7 +182,7 @@ def minervascrape(values, term, year, transcript_table, terms, file):
                 break
 
 def minervaupdate(values, term, year, transcript_table, terms):
-    """ If flagged through the command-line, this function 
+    """ If flagged through the command-line, this function will scrape for all terms and compare with the existing Scraped_Transcript_All_Terms.txt text file.
     
     Parameters
     ----------
@@ -191,7 +197,7 @@ def minervaupdate(values, term, year, transcript_table, terms):
         List of years corresponding to the specified terms. 
         
     transcript_table : list
-        List of Selenium.element objects that contains all the text to be parsed and scrapped.
+        List of Selenium.element objects that contains all the text to be parsed and scraped.
         
     terms : dict
         Dictionary that maps the elements in term to the corresponding term name ('Fall', 'Winter', 'Summer').
@@ -199,21 +205,52 @@ def minervaupdate(values, term, year, transcript_table, terms):
     Returns
     -------
     change : bool 
+        True if transcript has updated, otherwise False.
     """
     
-    with open("Updated_Scrapped_Transcript.txt", "w") as file:  
+    with open("Updated_Scraped_Transcript.txt", "w") as file:  
         minervascrape(values, term, year, transcript_table, terms, file)
     
-    os.system("diff Scrapped_Transcript_All_Terms.txt Updated_Scrapped_Transcript.txt > diff.txt")
+    os.system("diff Scraped_Transcript_All_Terms.txt Updated_Scraped_Transcript.txt > diff.txt")
     
     if os.path.getsize("diff.txt") != 0: # not empty file
         change = True
         # replace old file with new
-        os.system("cp Updated_Scrapped_Transcript.txt Scrapped_Transcript_All_Terms.txt")
+        os.system("cp Updated_Scraped_Transcript.txt Scraped_Transcript_All_Terms.txt")
     else:
         change = False
     
     os.remove("diff.txt")
-    os.remove("Updated_Scrapped_Transcript.txt")
+    os.remove("Updated_Scraped_Transcript.txt")
     
     return change
+
+def send_email():
+    
+    load_dotenv()
+
+    port = 465
+
+    smtp_server = "smtp.gmail.com"
+
+    sender_email = os.getenv("EMAIL")
+    receiver_email = os.getenv("MYEMAIL")
+    sender_email_password = os.getenv("PASS")
+
+    message = MIMEMultipart("alternative")
+    message["Subject"] = "Minerva Transcript Update"
+    message["From"] = sender_email
+    message["To"] = receiver_email
+    
+    text = "Your transcript has updated on Minerva! View changes below:"
+    transcript = open("Scraped_Transcript_All_Terms.txt").read()
+    
+    text = text + "\n\n" + transcript
+
+    message.attach(MIMEText(text, 'plain'))
+
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+        server.login(sender_email, sender_email_password)
+        server.sendmail(sender_email, receiver_email, message.as_string())
