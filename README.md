@@ -27,6 +27,8 @@
 
         MCGILLUSERNAME={insert McGill email here}
         MCGILLPASSWORD={insert password here}
+        
+        MYEMAIL={insert email where you want to receive notifications}
 
 </html>
 
