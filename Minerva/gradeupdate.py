@@ -19,11 +19,7 @@ print("Checking whether Scraped_Transcript_All_Terms.txt exists...\n")
 
 if not os.path.exists("Scraped_Transcript_All_Terms.txt"):
     print("Scraped_Transcript_All_Terms.txt could not be found!\n")
-    
-    try:
-        os.system("python minervascraper.py")
-    except:
-        os.remove("Scraped_Transcript_All_Terms.txt")
+    os.system("python minervascraper.py")
 else:
     print("Scraped_Transcript_All_Terms.txt was found!\n")
 

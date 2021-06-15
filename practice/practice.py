@@ -105,7 +105,6 @@ print(args, values)
 for a, v in args:
       if a in ("-u", "--update"):
             print("Starting update...")
-'''
 
 ######################################
 
@@ -143,3 +142,4 @@ with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
       server.sendmail(
             sender_email, receiver_email, message.as_string()
       )
+'''
