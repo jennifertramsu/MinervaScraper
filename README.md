@@ -70,10 +70,12 @@
 <p> Flags: </p>
 <ul> 
     <li> -h or --help (IN PROGRESS) </li>
-    <li> -u or --update (IN PROGRESS) </li>
+    <li> -u or --update </li>
 </ul>
 
 ## To-Do:
 <ul>
-    <li> Notification for when grades are released </li>
+    <li> Host code? </li>
+    <li> Run as background task either at set times during day or periodically </li>
+    <li> Either email to yourself or get main email setup working </li>
 </ul>

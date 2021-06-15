@@ -17,6 +17,5 @@ else:
 print("Minerva Update will run in background every minute...\n")
 # set up times for script to call scraper
 
-while 1:
-    os.system("python minervascraper.py -u")
-    time.sleep(60)
+os.system("python minervascraper.py -u")
+time.sleep(60)
