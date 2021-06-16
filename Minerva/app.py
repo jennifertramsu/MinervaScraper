@@ -6,9 +6,9 @@ app = Flask('')
 
 @app.route('/')
 def main():
-    server = Thread(target=job)
+"""    server = Thread(target=job)
     server.start()
-    server.join()
+    server.join()"""
     return "Minerva update is running!"
 
 def run():
