@@ -1,9 +1,7 @@
 # auth things
 import os
 import time
-from app import keep_alive
-
-keep_alive()
+from scraper import *
 
 print("Starting configuration for Minerva grade update!\n")
 print("Checking whether Scraped_Transcript_All_Terms.txt exists...\n")
@@ -15,7 +13,25 @@ else:
     print("Scraped_Transcript_All_Terms.txt was found!\n")
 
 print("Minerva Update will run in background every minute...\n")
-# set up times for script to call scraper
 
-os.system("python minervascraper.py -u")
-time.sleep(60)
+terms = {
+            'F' : 'Fall',
+            'W' : 'Winter', 
+            'S' : 'Summer'
+        }
+
+values = []
+term = []
+year = []
+
+while 1:
+    driver, transcript_table = load_page()
+    change = minervaupdate(values, term, year, transcript_table, terms)
+    if change:
+        print("Transcript updated!\n")
+        send_email()
+    else:
+        print("No change...\n")
+    time.sleep(60)
+    
+keep_alive()
