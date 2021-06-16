@@ -33,5 +33,3 @@ while 1:
     else:
         print("No change...\n")
     time.sleep(60)
-    
-keep_alive()
