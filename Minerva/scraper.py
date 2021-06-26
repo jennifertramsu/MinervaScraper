@@ -257,7 +257,7 @@ def send_email():
 
     context = ssl.create_default_context()
     
-    if sys.version[0] > 2: # version 3
+    if int(sys.version[0]) > 2: # version 3
         with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
             server.login(sender_email, sender_email_password)
             server.sendmail(sender_email, receiver_email, message.as_string())
