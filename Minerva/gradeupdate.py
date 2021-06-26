@@ -26,6 +26,7 @@ year = []
 
 driver, transcript_table = load_page()
 change = minervaupdate(values, term, year, transcript_table, terms)
+
 if change:
     print("Transcript updated!\n")
     send_email()
