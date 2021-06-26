@@ -1,4 +1,5 @@
 import os
+import sys
 from dotenv import load_dotenv
 
 # scrapers 
@@ -33,8 +34,12 @@ def load_page():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     options.headless = True
-    driver = webdriver.Chrome(executable_path='../chromedriver', options=options)
-
+    
+    try:
+        driver = webdriver.Chrome(executable_path='../chromedriver.exe', options=options)
+    except:
+        driver = webdriver.Chrome(executable_path='../chromedriver', options=options)
+        
     # heading to Minerva login page
     URL = 'https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin'
     driver.get(URL)
@@ -251,7 +256,14 @@ def send_email():
     message.attach(MIMEText(text, 'plain'))
 
     context = ssl.create_default_context()
+    
+    if sys.version[0] > 2: # version 3
+        with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+            server.login(sender_email, sender_email_password)
+            server.sendmail(sender_email, receiver_email, message.as_string())
 
-    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+    else:
+        server = smtplib.SMTP_SSL(smtp_server, port, context)
         server.login(sender_email, sender_email_password)
         server.sendmail(sender_email, receiver_email, message.as_string())
+        server.quit()
