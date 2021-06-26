@@ -6,7 +6,7 @@
 <p> Requirements: </p>
 <ul>
     <li> Uses chromedriver, download the appropriate version from https://chromedriver.chromium.org/downloads and save in Minerva's parent directory </li>
-    <li> Pip install librairies python-dotenv and selenium </li>
+    <li> Pip install libraries python-dotenv and selenium </li>
 </ul>
 <p> .env file </p>
 <ul>
@@ -28,7 +28,10 @@
         MCGILLUSERNAME={insert McGill email here}
         MCGILLPASSWORD={insert password here}
         
-        MYEMAIL={insert email where you want to receive notifications}
+        EMAIL={insert sender email here}
+        PASS={insert sender email password here}
+
+        MYEMAIL={insert recipient email here}
 
 </html>
 
@@ -67,6 +70,15 @@
         <li> e.g. f2019 and F2019 are equivalent for Fall term, 2019 </li>
     </ul>
     <li> Output is written to output file scraped_Transcript_TERM1_TERM2.txt if terms are specified, or to scraped_Transcript_All_Terms.txt if none are specified </li>
+    <li> For a one-time update, use the flag -u or --update </li>
+<html>
+<head>
+              
+    python minervascraper.py -u
+
+    python minervascraper.py --update
+
+</html>
 </ul>
 </p>
 <p> Flags: </p>
@@ -75,9 +87,20 @@
     <li> -u or --update </li>
 </ul>
 
+## Periodic Updates
+<p> To periodically run the update on your local computer: </p>
+<ul>
+    <li> MacOS, Linux Users</li>
+    <ul>
+        <li> Schedule through crontab </li>
+    </ul>
+    <li> Windows </li>
+    <ul>
+        <li> Windows task scheduler </li>
+    </ul>
+</ul>
+
 ## To-Do:
 <ul>
-    <li> Host code? </li>
-    <li> Run as background task either at set times during day or periodically </li>
-    <li> Either email to yourself or get main email setup working </li>
+    <li> Make README prettier (legible) </li>
 </ul>
