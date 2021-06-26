@@ -2,4 +2,6 @@
 chromedriver*
 *Scraped_Transcript*.txt
 __pycache__
+*.pyc
 updates.txt
+.nfs*

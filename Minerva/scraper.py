@@ -263,7 +263,7 @@ def send_email():
             server.sendmail(sender_email, receiver_email, message.as_string())
 
     else:
-        server = smtplib.SMTP_SSL(smtp_server, port, context)
+        server = smtplib.SMTP_SSL(smtp_server, port)
         server.login(sender_email, sender_email_password)
         server.sendmail(sender_email, receiver_email, message.as_string())
         server.quit()
