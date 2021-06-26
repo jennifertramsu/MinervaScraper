@@ -24,12 +24,10 @@ values = []
 term = []
 year = []
 
-while 1:
-    driver, transcript_table = load_page()
-    change = minervaupdate(values, term, year, transcript_table, terms)
-    if change:
-        print("Transcript updated!\n")
-        send_email()
-    else:
-        print("No change...\n")
-    time.sleep(60)
+driver, transcript_table = load_page()
+change = minervaupdate(values, term, year, transcript_table, terms)
+if change:
+    print("Transcript updated!\n")
+    send_email()
+else:
+    print("No change...\n")
