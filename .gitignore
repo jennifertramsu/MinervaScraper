@@ -1,5 +1,5 @@
 .env
-chromedriver.exe
+chromedriver
 *Scraped_Transcript*.txt
 __pycache__
 updates.txt
