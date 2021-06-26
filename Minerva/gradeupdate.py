@@ -12,8 +12,6 @@ if not os.path.exists("Scraped_Transcript_All_Terms.txt"):
 else:
     print("Scraped_Transcript_All_Terms.txt was found!\n")
 
-print("Minerva Update will run in background every minute...\n")
-
 terms = {
             'F' : 'Fall',
             'W' : 'Winter', 
