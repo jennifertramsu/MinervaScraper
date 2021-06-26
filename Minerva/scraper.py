@@ -170,7 +170,7 @@ def minervascrape(values, term, year, transcript_table, terms, file):
                 break               
             course_code = transcript_table[j].text
             if "RW" in transcript_table[j - 1].text:
-                file.write("\t\t" + course_code + ": Not released.\n")
+                file.write("\t\t" + course_code + ":\tNot released.\n")
             else:
                 grade = transcript_table[j + 5].text
                 course_avg = transcript_table[j + 9].text
