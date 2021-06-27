@@ -103,4 +103,5 @@
 ## To-Do:
 <ul>
     <li> Make README prettier (legible) </li>
+    <li> Make update notifications more specific (grade, coures average, ignore add/drop) </li>
 </ul>
