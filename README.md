@@ -70,9 +70,6 @@
     </ul>
     <li> Output is written to output file scraped_Transcript_TERM1_TERM2.json if terms are specified, or to scraped_Transcript_All_Terms.json if none are specified </li>
     <li> For a one-time update, use the flag -u or --update </li>
-    <ul>
-        <li> A notification is sent by email whenever an update is detected on the transcript (grade, course average) </li>
-        <li> Will not notify transcript changes relating to course add/drop </li>
 <html>
 <head>
               
@@ -81,6 +78,10 @@
     python minervascraper.py --update
 
 </html>
+    <ul>
+        <li> A notification is sent by email whenever an update is detected on the transcript (grade, course average) </li>
+        <li> Will not notify transcript changes relating to course add/drop </li>
+    </ul>
 </ul>
 </p>
 <p> Flags: </p>
