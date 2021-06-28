@@ -6,7 +6,6 @@
 <p> Requirements: </p>
 <ul>
     <li> Uses chromedriver, download the appropriate version from https://chromedriver.chromium.org/downloads and save in Minerva's parent directory </li>
-    <li> Pip install libraries python-dotenv and selenium </li>
 </ul>
 <p> .env file </p>
 <ul>
@@ -69,8 +68,11 @@
         <li> YEAR has form yyyy </li>
         <li> e.g. f2019 and F2019 are equivalent for Fall term, 2019 </li>
     </ul>
-    <li> Output is written to output file scraped_Transcript_TERM1_TERM2.txt if terms are specified, or to scraped_Transcript_All_Terms.txt if none are specified </li>
+    <li> Output is written to output file scraped_Transcript_TERM1_TERM2.json if terms are specified, or to scraped_Transcript_All_Terms.json if none are specified </li>
     <li> For a one-time update, use the flag -u or --update </li>
+    <ul>
+        <li> A notification is sent by email whenever an update is detected on the transcript (grade, course average) </li>
+        <li> Will not notify transcript changes relating to course add/drop </li>
 <html>
 <head>
               
@@ -103,5 +105,4 @@
 ## To-Do:
 <ul>
     <li> Make README prettier (legible) </li>
-    <li> Make update notifications more specific (grade, coures average, ignore add/drop) </li>
 </ul>
