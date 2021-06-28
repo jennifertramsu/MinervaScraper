@@ -51,14 +51,14 @@ if len(args) == 0: # no flags, proceed as usual
 else:
     for a, v in args:
         if a in ("-h", "--help"):
-            print(minervascrape.__doc__)
+            print("In progress...")
         elif a in ("-u", "--update"):
             print("Starting update...\n")
             driver, transcript_table = load_page()
-            change = minervaupdate(values, term, year, transcript_table, terms)
+            change, changes = minervaupdate(values, term, year, transcript_table, terms)
             if change:
                 print("Transcript updated!\n")
-                send_email()
+                send_email(changes)
             else:
                 print("No change...\n")
             driver.close()
