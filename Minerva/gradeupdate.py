@@ -4,13 +4,13 @@ import time
 from scraper import *
 
 print("Starting configuration for Minerva grade update!\n")
-print("Checking whether Scraped_Transcript_All_Terms.txt exists...\n")
+print("Checking whether Scraped_Transcript_All_Terms.json exists...\n")
 
-if not os.path.exists("Scraped_Transcript_All_Terms.txt"):
-    print("Scraped_Transcript_All_Terms.txt could not be found!\n")
+if not os.path.exists("Scraped_Transcript_All_Terms.json"):
+    print("Scraped_Transcript_All_Terms.json could not be found!\n")
     os.system("python minervascraper.py")
 else:
-    print("Scraped_Transcript_All_Terms.txt was found!\n")
+    print("Scraped_Transcript_All_Terms.json was found!\n")
 
 terms = {
             'F' : 'Fall',
@@ -23,10 +23,10 @@ term = []
 year = []
 
 driver, transcript_table = load_page()
-change = minervaupdate(values, term, year, transcript_table, terms)
+change, changes = minervaupdate(values, term, year, transcript_table, terms)
 
 if change:
     print("Transcript updated!\n")
-    send_email()
+    send_email(changes)
 else:
     print("No change...\n")
