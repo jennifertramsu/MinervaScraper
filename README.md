@@ -79,7 +79,7 @@
 
 </html>
     <ul>
-        <li> A notification is sent by email whenever an update is detected on the transcript (grade, course average) </li>
+        <li> A notification is sent by email whenever an update is detected on your transcript (grade, course average) </li>
         <li> Will not notify transcript changes relating to course add/drop </li>
     </ul>
 </ul>
