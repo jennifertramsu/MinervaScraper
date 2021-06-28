@@ -91,7 +91,7 @@
 </ul>
 
 ## Periodic Updates
-<p> To periodically run the update on your local computer: </p>
+<p> To periodically run the update on your local computer (run gradeupdate.py): </p>
 <ul>
     <li> MacOS, Linux Users</li>
     <ul>
