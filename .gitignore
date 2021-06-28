@@ -1,6 +1,6 @@
 .env
 chromedriver*
-*Scraped_Transcript*.txt
+*Scraped_Transcript*.*
 __pycache__
 *.pyc
 updates.txt

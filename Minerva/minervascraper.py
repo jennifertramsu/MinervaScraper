@@ -39,12 +39,12 @@ if len(args) == 0: # no flags, proceed as usual
     if len(values) != 0: # terms specified
         filename = "Scraped_Transcript_{}".format("_".join([term[i] + " " + year[i] for i in range(len(term))]))
         print("Beginning scraping for {}...\n".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
-        with open(filename + ".txt", "w") as file:
+        with open(filename + ".json", "w") as file:
             minervascrape(values, term, year, transcript_table, terms, file)
             print("Scraping complete! Please navigate to " + filename + ".txt to see results.")
     else: # no terms, scrape for all terms
         print("Beginning scraping for all terms...\n")
-        with open("Scraped_Transcript_All_Terms.txt", "w") as file:
+        with open("Scraped_Transcript_All_Terms.json", "w") as file:
             minervascrape(values, term, year, transcript_table, terms, file)
             print("Scraping complete! Please navigate to Scraped_Transcript_All_Terms.txt to see results.")
     driver.close()

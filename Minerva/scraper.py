@@ -1,5 +1,7 @@
 import os
 import sys
+import json
+import pandas as pd
 from dotenv import load_dotenv
 
 # scrapers 
@@ -130,26 +132,22 @@ def minervascrape(values, term, year, transcript_table, terms, file):
     """
     
     k = 0
-    if len(values) != 0:
-        file.write("Scraped Transcript for {}\n".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
-    else:
-        file.write("Scraped Transcript for All Terms\n")
-    file.write("\nTerm\tCourse Code\tGrade\tCourse Average\n")
+    d = [] # creating dictionary
     for i in range(len(transcript_table)):
         if len(values) != 0:
             if (term[k] not in transcript_table[i].text) or (year[k] not in transcript_table[i].text):
                 continue
             else:
-                file.write("\n" + term[k] + " " + year[k] + "\n")
-                print("Scraping " + term[k] + " " + year[k] + "...\n")
+                t = term[k] + " " + year[k]
+                print("Scraping " + t + "...\n")
         else: # no arguments, scrape all terms
             if (terms['F'] not in transcript_table[i].text) and (terms['W'] not in transcript_table[i].text) and (terms['S'] not in transcript_table[i].text):
                 continue
             else:
                 sem = transcript_table[i].text.split()
                 if len(sem) == 2:
-                    file.write("\n" + sem[0] + " " + sem[1] + "\n")
-                    print("Scraping " + sem[0] + " " + sem[1] + "...\n")
+                    t = sem[0] + " " + sem[1]
+                    print("Scraping " + t + "...\n")
                 else:
                     continue
         # in block of desired term and year
@@ -165,28 +163,53 @@ def minervascrape(values, term, year, transcript_table, terms, file):
                     while "TERM GPA" not in table[m].text:
                         m += 1
                     term_gpa = table[m + 1].text
-                    file.write("Term GPA: " + term_gpa + '\n')
+                    c = {"Term GPA" : term_gpa}
+                    #d.append(c)
                     break
                 break               
             course_code = transcript_table[j].text
             if "RW" in transcript_table[j - 1].text:
-                file.write("\t\t" + course_code + ":\tNot released.\n")
+                c = {"Term" : t, "Course Code" : course_code, "Grade" : "Not released.", "Course Average" : "Not released."}
+                d.append(c)
             else:
                 grade = transcript_table[j + 5].text
                 course_avg = transcript_table[j + 9].text
                 if len(course_avg.strip()) == 0:
-                    file.write("\t\t" + course_code + ":\t" + grade + "\t\tNot released.\n")
+                    c = {"Term" : t, "Course Code" : course_code, "Grade" : grade, "Course Average" : "Not released."}
+                    d.append(c)
                 else:
-                    file.write("\t\t" + course_code + ":\t" + grade + "\t\t" + course_avg + "\n")
+                    c = {"Term" : t, "Course Code" : course_code, "Grade" : grade, "Course Average" : course_avg}
+                    d.append(c)
             j += 11 # move to next course code
             if j >= len(transcript_table):
                 break
         i = j
-        if len(values) != 0:
-            k += 1
-            if k >= len(term):
-                break
+        k += 1
+        if len(values) != 0 and k >= len(term):
+            break
 
+    # writing to json file
+    j = json.dumps(d)
+    file.write(j)
+    
+def json2excel(file):
+    ''' Converts json file to a stacked Excel file. '''
+    
+    df = pd.read_json(file)
+
+    df.set_index(['Term', 'Course Code'], inplace=True)
+
+    return df
+    
+def add_drop_remove(df):
+    ''' For the sake of comparison, this function removes rows where both grade and course average are empty. We are only concerned with
+    courses where the grade or course average has updated (i.e. are present). '''
+    
+    df = df[df['Grade'] != "Not released."]
+    df = df[df['Course Average'] != "Not released."]
+    
+    return df
+    
 def minervaupdate(values, term, year, transcript_table, terms):
     """ If flagged through the command-line, this function will scrape for all terms and compare with the existing Scraped_Transcript_All_Terms.txt text file.
     
@@ -214,24 +237,37 @@ def minervaupdate(values, term, year, transcript_table, terms):
         True if transcript has updated, otherwise False.
     """
     
-    with open("Updated_Scraped_Transcript.txt", "w") as file:  
+    with open("Updated_Scraped_Transcript.json", "w") as file:  
         minervascrape(values, term, year, transcript_table, terms, file)
+        
+    old = json2excel("Scraped_Transcript_All_Terms.json")
+    new = json2excel("Updated_Scraped_Transcript.json")
     
-    os.system("diff Scraped_Transcript_All_Terms.txt Updated_Scraped_Transcript.txt > diff.txt")
+    old = add_drop_remove(old)
+    new = add_drop_remove(new)
     
-    if os.path.getsize("diff.txt") != 0: # not empty file
-        change = True
-        # replace old file with new
-        os.system("cp Updated_Scraped_Transcript.txt Scraped_Transcript_All_Terms.txt")
-    else:
+    changes = []
+    
+    if old.equals(new):
         change = False
+    else:
+        if not old['Grade'].equals(new['Grade']):
+            changes.append('Grade')
+            change = True
+        if not old['Course Average'].equals(new['Course Average']):
+            changes.append('Course Average')
+            change = True
+        else:
+            change = False
+            
+    if change:
+        os.system("cp Updated_Scraped_Transcript.json Scraped_Transcript_All_Terms.json")
     
-    os.remove("diff.txt")
-    os.remove("Updated_Scraped_Transcript.txt")
+    os.remove("Updated_Scraped_Transcript.json")
     
-    return change
+    return change, changes
 
-def send_email():
+def send_email(changes):
     
     load_dotenv()
 
@@ -249,9 +285,9 @@ def send_email():
     message["To"] = receiver_email
     
     text = "Your transcript has updated on Minerva! View changes below:"
-    transcript = open("Scraped_Transcript_All_Terms.txt").read()
+    changes = "\n\t - ".join(changes)
     
-    text = text + "\n\n" + transcript
+    text = text + "\n\n\t - " + changes
 
     message.attach(MIMEText(text, 'plain'))
 
