@@ -6,3 +6,5 @@ __pycache__
 updates.txt
 .nfs*
 practice
+.vscode
+.pytest_cache
