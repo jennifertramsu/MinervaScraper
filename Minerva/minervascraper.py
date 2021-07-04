@@ -3,7 +3,7 @@ import sys
 import getopt
 
 # import custom functions
-from scraper import *
+from scraper import load_page, minervascrape, minervaupdate, send_email
 
 arguments = sys.argv[1:]
 short_options = "uh"

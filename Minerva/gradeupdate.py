@@ -1,7 +1,7 @@
 # auth things
 import os
 import time
-from scraper import *
+from scraper import load_page, minervaupdate, send_email
 
 print("Starting configuration for Minerva transcript update!\n")
 print("Checking whether Scraped_Transcript_All_Terms.json exists...\n")
