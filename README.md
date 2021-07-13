@@ -106,4 +106,5 @@
 ## To-Do:
 <ul>
     <li> Make README prettier (legible) </li>
+    <li> Make use of HTML to embed changes to email </li>
 </ul>
