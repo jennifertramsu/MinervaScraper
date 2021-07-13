@@ -107,4 +107,5 @@
 <ul>
     <li> Make README prettier (legible) </li>
     <li> Make use of HTML to embed changes to email </li>
+    <li> Script to create connection to task scheduler (rather than manually scheduling it (and also bc I hate the scheduler's GUI)) :/ </li>
 </ul>
