@@ -261,7 +261,14 @@ def minervaupdate(values, term, year, transcript_table, terms):
             change = False
             
     if change:
-        os.system("cp Updated_Scraped_Transcript.json Scraped_Transcript_All_Terms.json")
+        # replacing old json with new json
+        old_json = open("Scraped_Transcript_All_Terms.json", "w")
+        new_json = open("Updated_Scraped_Transcript.json")
+        
+        old_json.write(new_json.read())
+        
+        old_json.close()
+        new_json.close()
     
     os.remove("Updated_Scraped_Transcript.json")
     
