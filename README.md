@@ -30,6 +30,8 @@
         
         NAME={Your name, so it feels a bit more personalized when email addresses you :D}
 
+<p> For security reasons, it's recommended to create a throwaway email account and use its credentials for EMAIL and PASS. If using gmail, the configuration that allows 3rd party applications to access the throwaway account will have to be enabled. </p>
+
 <h3> MinervaScrape </h3>
 
 <p> To use from the command-line: </p>
