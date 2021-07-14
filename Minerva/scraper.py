@@ -16,7 +16,16 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 def load_page():
-    """ Loads the unofficial transcript in Minerva using Selenium and returns the transcript_table which will be used for scraping. """
+    """ Loads the unofficial transcript in Minerva using Selenium and returns the transcript_table which will be used for scraping. 
+    
+    Returns
+    -------
+    driver : WebDriver
+        Controls the ChromeDriver and allows you to drive the browser.
+        
+    transcript_table : WebElement
+        Object containing HTML code that describes the Minerva unofficial transcript.
+    """
     
     # loading Minerva credentials
     load_dotenv()
@@ -124,7 +133,7 @@ def minervascrape(values, term, year, transcript_table, terms, file):
         
     file : file-type
         File-type object to which the function writes.    
-        
+            
     Examples
     --------
     >> import os
@@ -193,7 +202,18 @@ def minervascrape(values, term, year, transcript_table, terms, file):
     file.write(j)
     
 def json2excel(file):
-    ''' Converts json file to a stacked Excel file. '''
+    ''' Converts json file to a stacked Excel file. 
+    
+    Parameters
+    ----------
+    file : str
+        Filepath to json file.
+        
+    Returns
+    -------
+    df : Pandas.DataFrame
+        Dataframe with multi-indexing that can be exported as Excel file.
+    '''
     
     df = pd.read_json(file)
 
@@ -202,7 +222,18 @@ def json2excel(file):
     return df
      
 def extract_difference(old, new):
-    ''' Returns a Pandas DataFrame containing the difference between the two inputs. '''
+    ''' Returns a Pandas DataFrame containing the difference between the two inputs. 
+    
+    Parameters
+    ----------
+    old, new : Pandas.DataFrame
+        Dataframes to be compared.
+        
+    Returns
+    -------
+    changes : Pandas.DataFrame
+        DataFrame containing all transcript changes.
+    '''
     
     df = old.compare(new, keep_equal=True).reset_index("Term", drop=True) # rows containing changes, Term index dropped
     
@@ -237,6 +268,9 @@ def minervaupdate(values, term, year, transcript_table, terms):
     -------
     change : bool 
         True if transcript has updated, otherwise False.
+        
+    changes : Pandas.DataFrame
+        DataFrame containing all transcript changes.
     """
     
     with open("Updated_Scraped_Transcript.json", "w") as file:  
@@ -270,7 +304,18 @@ def minervaupdate(values, term, year, transcript_table, terms):
     return change, changes
 
 def generate_html(df):
-    ''' Generates an HTML table based on the information from the passed Pandas DataFrame. '''
+    ''' Generates an HTML table based on the information from the passed Pandas DataFrame. 
+    
+    Parameters
+    ----------
+    df : Pandas.DataFrame
+        Dataframe containing transcript changes.
+        
+    Returns
+    -------
+    html : str
+        HTML code to be embedded in email.
+    '''
     
     load_dotenv()
     name = os.getenv("NAME")
@@ -304,6 +349,13 @@ def generate_html(df):
     return html
 
 def send_email(changes):
+    ''' Sends the email to notify transcript changes. Attaches an HTML formatted table containing all changes. 
+    
+    Parameters
+    ----------
+    changes : Pandas.DataFrame
+        DataFrame containing transcript changes to be added to HTML table.
+    '''
     
     load_dotenv()
 
