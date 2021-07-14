@@ -200,15 +200,17 @@ def json2excel(file):
     df.set_index(['Term', 'Course Code'], inplace=True)
 
     return df
+     
+def extract_difference(old, new):
+    ''' Returns a Pandas DataFrame containing the difference between the two inputs. '''
     
-def add_drop_remove(df):
-    ''' For the sake of comparison, this function removes rows where both grade and course average are empty. We are only concerned with
-    courses where the grade or course average has updated (i.e. are present). '''
+    df = old.compare(new, keep_equal=True).reset_index("Term", drop=True) # rows containing changes, Term index dropped
     
-    df = df[df['Grade'] != "Not released."]
-    df = df[df['Course Average'] != "Not released."]
+    courses = df.index.to_list()
     
-    return df
+    changes = new.reset_index("Term", drop=True).loc[courses, :]
+    
+    return changes
     
 def minervaupdate(values, term, year, transcript_table, terms):
     """ If flagged through the command-line, this function will scrape for all terms and compare with the existing Scraped_Transcript_All_Terms.txt text file.
@@ -242,22 +244,15 @@ def minervaupdate(values, term, year, transcript_table, terms):
         
     old = json2excel("Scraped_Transcript_All_Terms.json")
     new = json2excel("Updated_Scraped_Transcript.json")
-    
-    old = add_drop_remove(old)
-    new = add_drop_remove(new)
-    
-    changes = []
-    
+        
     if old.equals(new):
         change = False
     else:
-        if not old['Grade'].equals(new['Grade']):
-            changes.append('Grade')
-            change = True
-        if not old['Course Average'].equals(new['Course Average']):
-            changes.append('Course Average')
+        if not old['Grade'].equals(new['Grade']) or not old['Course Average'].equals(new['Course Average']):
+            changes = extract_difference(old, new)
             change = True
         else:
+            changes = None
             change = False
             
     if change:
@@ -273,6 +268,40 @@ def minervaupdate(values, term, year, transcript_table, terms):
     os.remove("Updated_Scraped_Transcript.json")
     
     return change, changes
+
+def generate_html(df):
+    ''' Generates an HTML table based on the information from the passed Pandas DataFrame. '''
+    
+    load_dotenv()
+    name = os.getenv("NAME")
+    
+    html = f'''<html>
+                    <head></head>
+                    <body>
+                        <p> Hi {name}, </p>
+                        </br>
+                        <p> Your transcript has updated on Minerva! View changes below: </p>
+                        </br>
+                        <table border="2">
+                            <tr>
+                                <th> Course Code </th>
+                                <th> Grade </th>
+                                <th> Course Average </th> 
+                            </tr>'''
+
+    table = ""
+
+    for col, item in df.iterrows():
+        table += "<tr>"
+        table += "<th> " + col + " </th>"
+        for i in item:
+            table += "<th> " + i + " </th>"
+        table += "</tr>"
+        
+    html += table
+    html += '''</table></body></html>'''
+    
+    return html
 
 def send_email(changes):
     
@@ -291,12 +320,9 @@ def send_email(changes):
     message["From"] = sender_email
     message["To"] = receiver_email
     
-    text = "Your transcript has updated on Minerva! View changes below:"
-    changes = "\n\t - ".join(changes)
-    
-    text = text + "\n\n\t - " + changes
+    html = generate_html(changes)
 
-    message.attach(MIMEText(text, 'plain'))
+    message.attach(MIMEText(html, 'html'))
 
     context = ssl.create_default_context()
     
@@ -310,3 +336,14 @@ def send_email(changes):
         server.login(sender_email, sender_email_password)
         server.sendmail(sender_email, receiver_email, message.as_string())
         server.quit()
+
+##### ARCHIVE #####
+
+def add_drop_remove(df):
+    ''' For the sake of comparison, this function removes rows where both grade and course average are empty. We are only concerned with
+    courses where the grade or course average has updated (i.e. are present). '''
+    
+    df = df[df['Grade'] != "Not released."] # if grade is not present, then course average is definitely not present
+    
+    return df
+   
