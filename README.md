@@ -94,5 +94,5 @@
 
 ## To-Do:
 <ul>
-    <li> Script to create connection to task scheduler (rather than manually scheduling it (and also bc I hate the scheduler's GUI)) :/ </li>
+    <li> ¯\_(ツ)_/¯ </li>
 </ul>
