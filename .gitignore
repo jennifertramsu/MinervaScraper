@@ -8,3 +8,4 @@ updates.txt
 practice
 .vscode
 .pytest_cache
+*.xml
