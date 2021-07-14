@@ -2,30 +2,26 @@
 
 <p> Because it takes effort to log onto Minerva and navigate through the different webpages to see my grades only to realize that they haven't been uploaded yet. </p>
 
-## Usage:
-<p> Requirements: </p>
-<ul>
-    <li> Uses chromedriver, download the appropriate version from https://chromedriver.chromium.org/downloads and save in Minerva's parent directory </li>
-</ul>
-<p> .env file </p>
-<ul>
-    <li> Login credentials are retrieved from a .env file, stored in the same directory as the script </li>
-    <li> Create a .env file following the format below
-    <li> Set LOGIN=1 for ID login or LOGIN=0 for email login
-</ul>
+## Usage
 
-<html>
-    <head>
+### Requirements
+<p> Uses chromedriver, download the appropriate version from <a href=https://chromedriver.chromium.org/downloads> here </a> and save in Minerva's parent directory </p>
+
+<h3> .env file </h3>
+<p> Login credentials are retrieved from a .env file, stored in the same directory as the script. Create a .env file following the format below: </p>
+<ul>
+    <li> Set LOGIN=1 for ID login or LOGIN=0 for email login </li>
+</ul>
               
         # .env
 
         LOGIN=1
 
-        MCGILLID={insert ID here}
-        MINERVAPIN={insert PIN here}
+        MCGILLID={insert ID here} # can exclude if LOGIN=0
+        MINERVAPIN={insert PIN here} # can exclude if LOGIN=0
 
-        MCGILLUSERNAME={insert McGill email here}
-        MCGILLPASSWORD={insert password here}
+        MCGILLUSERNAME={insert McGill email here} # can exclude if LOGIN=1
+        MCGILLPASSWORD={insert password here} # can exclude if LOGIN=1
         
         EMAIL={insert sender email here}
         PASS={insert sender email password here}
@@ -34,67 +30,50 @@
         
         NAME={Your name, so it feels a bit more personalized when email addresses you :D}
 
-</html>
+<h3> MinervaScrape </h3>
 
 <p> To use from the command-line: </p>
 <ul>
-    <li> Navigate to the directory Minerva </li>
-<html>
-<head>
-              
+    <li> Navigate to the directory Minerva (assuming currently in MinervaScraper) </li>
+</ul>
+  
     cd Minerva
 
-</html>
+<ul>
     <li> Run the command python minervascraper.py with no arguments to scrape for all terms </li>
-<html>
-<head>
+</ul>
               
     python minervascraper.py
 
-</html>
+<ul>
     <li> Run the command python minervascraper.py ARG1 ARG2 etc... to scrape for specified terms </li>
-<html>
-<head>
+</ul>
               
     python minervascraper.py f2019 w2020 s2020 F2020
 
-</html>
-    <li> Args take the form TERM + YEAR, case-insensitive, time-independent </li>
+<p> Arguments are case-insensitive and can be passed in any order (time-independent). They take the form TERM + YEAR, where TERM is represented by a single letter, and YEAR has the form yyyy. </p>
+<ul>
+    <li> S/s --> Summer </li>
+    <li> F/f --> Fall </li>
+    <li> W/w --> Winter </li>
+    <li> Example: </li>
     <ul>
-        <li> TERM is represented by a single letter: </li>
-        <ul>
-            <li> S/s --> Summer </li>
-            <li> F/f --> Fall </li>
-            <li> W/w --> Winter </li>
-        </ul>
-        <li> YEAR has form yyyy </li>
-        <li> e.g. f2019 and F2019 are equivalent for Fall term, 2019 </li>
+        <li> f2019 and F2019 are equivalent for Fall term, 2019 </li>
     </ul>
-    <li> Output is written to output file scraped_Transcript_TERM1_TERM2.json if terms are specified, or to scraped_Transcript_All_Terms.json if none are specified </li>
-    <li> For a one-time update, use the flag -u or --update </li>
-<html>
-<head>
+</ul>
+<p> Output is written to an output file named Scraped_Transcript_TERM1_TERM2.json if terms are specified, or to Scraped_Transcript_All_Terms.json if none are specified. </p>
+
+<h3> GradeUpdate </h3>
+<p> There are two ways to check for transcript updates. The only reason why two ways exist is because I was bored, so really, there's only one (useful) way. </p>
+
+<b> (1) </b> Flag for a one-time update with minervascrape.py
               
     python minervascraper.py -u
 
     python minervascraper.py --update
 
-</html>
-    <ul>
-        <li> A notification is sent by email whenever an update is detected on your transcript (grade, course average) </li>
-        <li> Email contains HTML formatted table that describes changes to transcript. </li>
-        <li> Will not notify transcript changes relating to course add/drop </li>
-    </ul>
-</ul>
-</p>
-<p> Flags: </p>
-<ul> 
-    <li> -h or --help (IN PROGRESS) </li>
-    <li> -u or --update </li>
-</ul>
-
-## Periodic Updates
-<p> To periodically run the update on your local computer (run gradeupdate.py): </p>
+<b> (2) </b> Periodically call gradeupdate.py
+<p> By making use of external schedulers, gradeupdate.py will run the scraper at prescribed intervals and send an email when a change (grade, course average) is present on Minerva's unofficial transcript, excluding changes related to add/drop (because you probably don't care about that). The email will contain a formatted table that describes these changes. </p>
 <ul>
     <li> MacOS, Linux Users</li>
     <ul>
@@ -108,6 +87,5 @@
 
 ## To-Do:
 <ul>
-    <li> Make README prettier (legible) </li>
     <li> Script to create connection to task scheduler (rather than manually scheduling it (and also bc I hate the scheduler's GUI)) :/ </li>
 </ul>
