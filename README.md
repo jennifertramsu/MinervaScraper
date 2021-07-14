@@ -103,6 +103,11 @@
     <li> Windows </li>
     <ul>
         <li> Windows task scheduler </li>
+        <ul>
+            <li> PROGRAM : path to python.exe </li>
+            <li> ARGUMENTS : path to gradeupdate.py </li>
+            <li> START IN : path to folder holding gradeupdate.py (Minerva) </li>
+        </ul>
     </ul>
 </ul>
 
