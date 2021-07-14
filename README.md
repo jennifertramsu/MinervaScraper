@@ -31,6 +31,8 @@
         PASS={insert sender email password here}
 
         MYEMAIL={insert recipient email here}
+        
+        NAME={Your name, so it feels a bit more personalized when email addresses you :D}
 
 </html>
 
@@ -80,6 +82,7 @@
 </html>
     <ul>
         <li> A notification is sent by email whenever an update is detected on your transcript (grade, course average) </li>
+        <li> Email contains HTML formatted table that describes changes to transcript. </li>
         <li> Will not notify transcript changes relating to course add/drop </li>
     </ul>
 </ul>
@@ -106,6 +109,5 @@
 ## To-Do:
 <ul>
     <li> Make README prettier (legible) </li>
-    <li> Make use of HTML to embed changes to email </li>
     <li> Script to create connection to task scheduler (rather than manually scheduling it (and also bc I hate the scheduler's GUI)) :/ </li>
 </ul>
