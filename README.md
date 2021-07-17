@@ -5,7 +5,7 @@
 ## Usage
 
 ### Requirements
-<p> Uses chromedriver, download the appropriate version from <a href=https://chromedriver.chromium.org/downloads> here </a> and save in Minerva's parent directory </p>
+<p> Uses chromedriver, download the appropriate version from <a href=https://chromedriver.chromium.org/downloads>here</a> and save in Minerva's parent directory </p>
 
 <h3> .env file </h3>
 <p> Login credentials are retrieved from a .env file, stored in the same directory as the script. Create a .env file following the format below: </p>
