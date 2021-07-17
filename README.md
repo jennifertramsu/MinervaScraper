@@ -95,4 +95,5 @@
 ## To-Do:
 <ul>
     <li> ¯\_(ツ)_/¯ </li>
+    <li> Create a setup.py and requirements.txt </li>
 </ul>
