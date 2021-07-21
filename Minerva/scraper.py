@@ -280,6 +280,7 @@ def minervaupdate(values, term, year, transcript_table, terms):
     new = json2excel("Updated_Scraped_Transcript.json")
         
     if old.equals(new):
+        changes = None
         change = False
     else:
         if not old['Grade'].equals(new['Grade']) or not old['Course Average'].equals(new['Course Average']):
