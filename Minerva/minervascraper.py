@@ -6,8 +6,8 @@ import getopt
 from scraper import load_page, minervascrape, minervaupdate, send_email
 
 arguments = sys.argv[1:]
-short_options = "uh"
-long_options = ["update", "help"]
+short_options = "u"
+long_options = ["update"]
 
 # validating command-line flags and arguments
 try:
@@ -50,9 +50,7 @@ if len(args) == 0: # no flags, proceed as usual
     driver.close()
 else:
     for a, v in args:
-        if a in ("-h", "--help"):
-            print("In progress...")
-        elif a in ("-u", "--update"):
+        if a in ("-u", "--update"):
             print("Starting update...\n")
             driver, transcript_table = load_page()
             change, changes = minervaupdate(values, term, year, transcript_table, terms)
@@ -62,3 +60,4 @@ else:
             else:
                 print("No change...\n")
             driver.close()
+            
