@@ -5,7 +5,7 @@
 ## Usage
 
 ### Requirements
-<p> Uses chromedriver, download the appropriate version from <a href=https://chromedriver.chromium.org/downloads>here</a> and save in Minerva's parent directory. To download all required dependencies, navigate to Minerva's parent directory and pip install requirements.txt. </p>
+<p> Uses chromedriver (and by extension, google chrome must be installed), download the appropriate version from <a href=https://chromedriver.chromium.org/downloads>here</a> and save in Minerva's parent directory. To download all required dependencies, navigate to Minerva's parent directory and pip install requirements.txt. </p>
 
         pip install -r requirements.txt
 
@@ -41,19 +41,19 @@
     <li> Navigate to the directory Minerva (assuming currently in MinervaScraper) </li>
 </ul>
   
-    cd Minerva
+        cd Minerva
 
 <ul>
     <li> Run the command python minervascraper.py with no arguments to scrape for all terms </li>
 </ul>
               
-    python minervascraper.py
+        python minervascraper.py
 
 <ul>
     <li> Run the command python minervascraper.py ARG1 ARG2 etc... to scrape for specified terms </li>
 </ul>
               
-    python minervascraper.py f2019 w2020 s2020 F2020
+        python minervascraper.py f2019 w2020 s2020 F2020
 
 <p> Arguments are case-insensitive and can be passed in any order (time-independent). They take the form TERM + YEAR, where TERM is represented by a single letter, and YEAR has the form yyyy. </p>
 <ul>
