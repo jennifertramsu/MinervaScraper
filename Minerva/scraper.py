@@ -9,11 +9,43 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from msedge.selenium_tools import EdgeOptions, Edge
 
 # email stuff
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+
+def load_browser(browser):
+
+    if browser == "CHROME":
+        # initialize Chrome driver
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        options.headless = True
+        
+        driver = webdriver.Chrome(executable_path='../chromedriver.exe', options=options)
+
+    elif browser == "EDGE":
+        # initialize MsEdge driver
+        options = EdgeOptions()
+        options.use_chromium = True
+        options.add_argument("--headless")
+        options.add_argument("disable-gpu")
+
+        driver = Edge(executable_path = '../msedgedriver.exe', options=options)
+
+    elif browser == "FIREFOX":
+        # initialize Firefox driver
+        options = webdriver.FirefoxOptions()
+        options.headless = True
+        
+        driver = webdriver.Firefox(executable_path='../geckodriver.exe', options=options, service_log_path=os.devnull)
+    
+    else:
+        raise ValueError("Incompatible browser! Start a GitHub issue to request this browser.")
+
+    return driver
 
 def load_page():
     """ Loads the unofficial transcript in Minerva using Selenium and returns the transcript_table which will be used for scraping. 
@@ -41,15 +73,11 @@ def load_page():
         username = os.getenv('MCGILLUSERNAME')
         password = os.getenv('MCGILLPASSWORD') 
 
-    # initialize Chrome driver
-    options = webdriver.ChromeOptions()
-    options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    options.headless = True
-    
-    try:
-        driver = webdriver.Chrome(executable_path='../chromedriver.exe', options=options)
-    except:
-        driver = webdriver.Chrome(executable_path='../chromedriver', options=options)
+    # initializer driver
+
+    browser = os.getenv("BROWSER")
+
+    driver = load_browser(browser)
         
     # heading to Minerva login page
     URL = 'https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin'

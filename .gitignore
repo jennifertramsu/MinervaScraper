@@ -1,5 +1,5 @@
 .env
-chromedriver*
+*.exe
 *Scraped_Transcript*.*
 __pycache__
 *.pyc
@@ -9,3 +9,4 @@ practice
 .vscode
 .pytest_cache
 *.xml
+*.log
