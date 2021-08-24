@@ -5,7 +5,15 @@
 ## Usage
 
 ### Requirements
-<p> Uses chromedriver (and by extension, google chrome must be installed), download the appropriate version from <a href=https://chromedriver.chromium.org/downloads>here</a> and save in Minerva's parent directory. To download all required dependencies, navigate to Minerva's parent directory and pip install requirements.txt. </p>
+<p> This program currently supports three browsers: <b> Chrome, Edge, and Firefox </b>. Depending on your browser of interest, download the appropriate webdriver from the links below: </p>
+
+<ul> 
+    <li> <a href=https://chromedriver.chromium.org/downloads> Chrome</a> </li>
+    <li> <a href=https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/> Edge </a> </li>
+    <li> <a href=https://github.com/mozilla/geckodriver/releases> Firefox</a> </li>
+</ul>
+
+<p> Once downloaded, save in Minerva's parent directory. To download all required dependencies, navigate to Minerva's parent directory and pip install requirements.txt. </p>
 
         pip install -r requirements.txt
 
@@ -17,7 +25,9 @@
               
         # .env
 
-        LOGIN=1
+        LOGIN={0, 1}
+
+        BROWSER={CHROME, EDGE, FIREFOX}
 
         MCGILLID={insert ID here} # can exclude if LOGIN=0
         MINERVAPIN={insert PIN here} # can exclude if LOGIN=0
