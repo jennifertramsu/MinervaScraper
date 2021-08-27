@@ -90,7 +90,7 @@
 <b> (2) </b> Periodically call gradeupdate.py
 <p> By making use of external schedulers, gradeupdate.py will run the scraper at prescribed intervals and send an email when a change (grade, course average) is present on Minerva's unofficial transcript, excluding changes related to add/drop (because you probably don't care about that). The email will contain a formatted table that describes these changes. </p>
 <ul>
-    <li> MacOS, Linux Users</li>
+    <li> MacOS, Linux </li>
     <ul>
         <li> Schedule through crontab </li>
     </ul>
