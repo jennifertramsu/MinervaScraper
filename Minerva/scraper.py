@@ -17,7 +17,19 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 def load_browser(browser):
+    ''' Loads the appropriate driver as indicated in the .env file.
 
+    Parameters
+    ----------
+    browser : str, {CHROME, EDGE, FIREFOX}
+        String argument indicating the browser of preference.
+
+    Returns
+    -------
+    driver : WebDriver
+        Controls the Driver and allows you to drive the browser.
+    '''
+    
     if browser == "CHROME":
         # initialize Chrome driver
         options = webdriver.ChromeOptions()
@@ -53,7 +65,7 @@ def load_page():
     Returns
     -------
     driver : WebDriver
-        Controls the ChromeDriver and allows you to drive the browser.
+        Controls the Driver and allows you to drive the browser.
         
     transcript_table : WebElement
         Object containing HTML code that describes the Minerva unofficial transcript.
