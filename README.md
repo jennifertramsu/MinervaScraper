@@ -21,6 +21,7 @@
 <p> Login credentials are retrieved from a .env file, stored in the same directory as the script. Create a .env file following the format below: </p>
 <ul>
     <li> Set LOGIN=1 for ID login or LOGIN=0 for email login </li>
+    <li> Set BROWSER to indicate your preferred browser </li>
 </ul>
               
         # .env
