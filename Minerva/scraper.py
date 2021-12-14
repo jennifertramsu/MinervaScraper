@@ -129,7 +129,6 @@ def load_page():
     try:
         errors = driver.find_element_by_name("web_stop")
         print("Login failed.\n")
-        
     except: # login successful
         print("Login successful!\n")   
         
