@@ -10,3 +10,4 @@ practice
 .pytest_cache
 *.xml
 *.log
+*.txt
