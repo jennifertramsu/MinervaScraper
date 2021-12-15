@@ -1,0 +1,14 @@
+15/12/2021 13:41:11
+
+Starting configuration for Minerva transcript update!
+Checking whether Scraped_Transcript_All_Terms.json exists...
+Scraped_Transcript_All_Terms.json was found!
+No change...
+
+15/12/2021 13:42:07
+
+Starting configuration for Minerva transcript update!
+Checking whether Scraped_Transcript_All_Terms.json exists...
+Scraped_Transcript_All_Terms.json was found!
+No change...
+

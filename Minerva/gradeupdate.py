@@ -1,17 +1,29 @@
 # auth things
 import os
 import time
+from datetime import datetime
 from scraper import load_page, minervaupdate, send_email
 
-print("Starting configuration for Minerva transcript update!\n")
-print("Checking whether Scraped_Transcript_All_Terms.json exists...\n")
+# Open log
+if not os.path.exists("minerva_log.txt"):
+    f = open("minerva_log.txt", 'w')
+else: 
+    f = open("minerva_log.txt", 'a')
+
+now = datetime.now()
+dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+
+f.write(dt_string + "\n\n")
+
+f.write("Starting configuration for Minerva transcript update!\n")
+f.write("Checking whether Scraped_Transcript_All_Terms.json exists...\n")
 
 if not os.path.exists("Scraped_Transcript_All_Terms.json"):
-    print("Scraped_Transcript_All_Terms.json could not be found!\n")
+    f.write("Scraped_Transcript_All_Terms.json could not be found!\n")
     os.system("python minervascraper.py")
-    print("The next time you call gradeupdate, the program will use this file to check for updates!")
+    f.write("The next time you call gradeupdate, the program will use this file to check for updates!")
 else:
-    print("Scraped_Transcript_All_Terms.json was found!\n")
+    f.write("Scraped_Transcript_All_Terms.json was found!\n")
 
     terms = {
                 'F' : 'Fall',
@@ -27,7 +39,10 @@ else:
     change, changes = minervaupdate(values, term, year, transcript_table, terms)
 
     if change:
-        print("Transcript updated!\n")
+        f.write("Transcript updated!\n")
         send_email(changes)
     else:
-        print("No change...\n")
+        f.write("No change...\n")
+
+f.write("\n")
+f.close()
