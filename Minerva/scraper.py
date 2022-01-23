@@ -59,9 +59,14 @@ def load_browser(browser):
 
     return driver
 
-def load_page():
+def load_page(f=None):
     """ Loads the unofficial transcript in Minerva using Selenium and returns the transcript_table which will be used for scraping. 
     
+    Parameters
+    ----------
+    f : file
+        Log file to be written to.
+
     Returns
     -------
     driver : WebDriver
@@ -95,8 +100,13 @@ def load_page():
     URL = 'https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin'
     driver.get(URL)
 
+    try:
     # wait for page to load
-    WebDriverWait(driver=driver, timeout=10).until(EC.presence_of_element_located((By.ID, "UserID")))
+        WebDriverWait(driver=driver, timeout=10).until(EC.presence_of_element_located((By.ID, "UserID")))
+    except:
+        if not f==None:
+            f.write('Page failed to load.\n\n')
+        raise ValueError('Page failed to load.')
 
     if login_by_ID:
         # retrieving username field and sending username
@@ -128,7 +138,8 @@ def load_page():
 
     try:
         errors = driver.find_element_by_name("web_stop")
-        raise ValueError("Login failed.\n")
+        f.write('Login failed.')
+        raise ValueError('Login failed.')
     except: # login successful
         print("Login successful!\n")   
         
