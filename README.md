@@ -111,4 +111,5 @@
 <ul>
     <li> ¯\_(ツ)_/¯ </li>
     <li> Make more convenient </li>
+    <li> Auto-update the driver when new version is released. :/ </li>
 </ul>
