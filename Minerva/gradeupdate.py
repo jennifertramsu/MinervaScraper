@@ -35,8 +35,8 @@ else:
     term = []
     year = []
 
-    driver, transcript_table = load_page(f)
-    change, changes = minervaupdate(values, term, year, transcript_table, terms)
+    driver, transcript_table, gpa_available = load_page(f)
+    change, changes = minervaupdate(values, term, year, transcript_table, gpa_available, terms)
 
     if change:
         f.write("Transcript updated!\n")

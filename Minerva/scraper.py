@@ -156,10 +156,11 @@ def load_page(f=None):
 
     # scrape for grades
     transcript_table = driver.find_elements_by_class_name("dedefault")
+    gpa_available = driver.find_elements_by_class_name("infotext")[1]
     
-    return driver, transcript_table
+    return driver, transcript_table, gpa_available
 
-def minervascrape(values, term, year, transcript_table, terms, file):
+def minervascrape(values, term, year, transcript_table, gpa_available, terms, file):
     """ This is the main scraper function. Given the inputted terms (optional), the function will scrape through the user's
     unofficial transcript on Minerva and write the output (Course Code, Grade, Course Average, Term GPA) to a text file.
     
@@ -189,6 +190,11 @@ def minervascrape(values, term, year, transcript_table, terms, file):
     >> import os
     >> os.system("python minervascraper.py f2019 w2020 S2020")
     """
+
+    if gpa_available.text == "Credit / GPA information is not available. Please check the record again after overnight system processing has occurred.":
+        gpa = 0
+    else:
+        gpa = 1
     
     k = 0
     d = [] # creating dictionary
@@ -225,7 +231,9 @@ def minervascrape(values, term, year, transcript_table, terms, file):
                     c = {"Term GPA" : term_gpa}
                     #d.append(c)
                     break
-                break               
+                break    
+            elif "Standing" in transcript_table[j].text and gpa == 0:
+                break
             course_code = transcript_table[j].text
             if "RW" in transcript_table[j - 1].text:
                 c = {"Term" : t, "Course Code" : course_code, "Grade" : "Not released.", "Course Average" : "Not released."}
@@ -293,7 +301,7 @@ def extract_difference(old, new):
     
     return changes
     
-def minervaupdate(values, term, year, transcript_table, terms):
+def minervaupdate(values, term, year, transcript_table, gpa_available, terms):
     """ If flagged through the command-line, this function will scrape for all terms and compare with the existing Scraped_Transcript_All_Terms.txt text file.
     
     Parameters
@@ -324,7 +332,7 @@ def minervaupdate(values, term, year, transcript_table, terms):
     """
     
     with open("Updated_Scraped_Transcript.json", "w") as file:  
-        minervascrape(values, term, year, transcript_table, terms, file)
+        minervascrape(values, term, year, transcript_table, gpa_available, terms, file)
         
     old = json2excel("Scraped_Transcript_All_Terms.json")
     new = json2excel("Updated_Scraped_Transcript.json")

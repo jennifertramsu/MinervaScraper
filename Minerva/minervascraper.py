@@ -35,25 +35,25 @@ if len(values) != 0:
         year.append(arg[1:])
 
 if len(args) == 0: # no flags, proceed as usual
-    driver, transcript_table = load_page()
+    driver, transcript_table, gpa_available = load_page()
     if len(values) != 0: # terms specified
         filename = "Scraped_Transcript_{}".format("_".join([term[i] + " " + year[i] for i in range(len(term))]))
         print("Beginning scraping for {}...\n".format(", ".join([term[i] + " " + year[i] for i in range(len(term))])))
         with open(filename + ".json", "w") as file:
-            minervascrape(values, term, year, transcript_table, terms, file)
+            minervascrape(values, term, year, transcript_table, gpa_available, terms, file)
             print("Scraping complete! Please navigate to " + filename + ".json to see results.\n")
     else: # no terms, scrape for all terms
         print("Beginning scraping for all terms...\n")
         with open("Scraped_Transcript_All_Terms.json", "w") as file:
-            minervascrape(values, term, year, transcript_table, terms, file)
+            minervascrape(values, term, year, transcript_table, gpa_available, terms, file)
             print("Scraping complete! Please navigate to Scraped_Transcript_All_Terms.json to see results.\n")
     driver.close()
 else:
     for a, v in args:
         if a in ("-u", "--update"):
             print("Starting update...\n")
-            driver, transcript_table = load_page()
-            change, changes = minervaupdate(values, term, year, transcript_table, terms)
+            driver, transcript_table, gpa_available = load_page()
+            change, changes = minervaupdate(values, term, year, transcript_table, gpa_available, terms)
             if change:
                 print("Transcript updated!\n")
                 send_email(changes)
