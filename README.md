@@ -110,6 +110,6 @@
 ## To-Do:
 <ul>
     <li> ¯\_(ツ)_/¯ </li>
-    <li> Make more convenient </li>
+    <li> Find an alternative messaging system that isn't email bc security :/ </li>
     <li> Auto-update the driver when new version is released. :/ </li>
 </ul>
