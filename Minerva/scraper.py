@@ -156,7 +156,11 @@ def load_page(f=None):
 
     # scrape for grades
     transcript_table = driver.find_elements_by_class_name("dedefault")
-    gpa_available = driver.find_elements_by_class_name("infotext")[1]
+
+    try:
+        gpa_available = driver.find_elements_by_class_name("infotext")[1]
+    except:
+        gpa_available = None
     
     return driver, transcript_table, gpa_available
 
@@ -191,11 +195,11 @@ def minervascrape(values, term, year, transcript_table, gpa_available, terms, fi
     >> os.system("python minervascraper.py f2019 w2020 S2020")
     """
 
-    if gpa_available.text == "Credit / GPA information is not available. Please check the record again after overnight system processing has occurred.":
-        gpa = 0
-    else:
+    if gpa_available == None:
         gpa = 1
-    
+    elif gpa_available.text == "Credit / GPA information is not available. Please check the record again after overnight system processing has occurred.":
+        gpa = 0
+
     k = 0
     d = [] # creating dictionary
     for i in range(len(transcript_table)):
@@ -447,6 +451,16 @@ def send_email(changes):
         server.login(sender_email, sender_email_password)
         server.sendmail(sender_email, receiver_email, message.as_string())
         server.quit()
+
+def update_driver(browser):
+    print('in progress...')
+
+    if browser == "CHROME":
+        print()
+    elif browser == "EDGE":
+        print()
+    elif browser == "FIREFOX":
+        print()
 
 ##### ARCHIVE #####
 
