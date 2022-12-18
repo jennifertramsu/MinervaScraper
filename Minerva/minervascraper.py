@@ -44,6 +44,8 @@ if len(args) == 0: # no flags, proceed as usual
             print("Scraping complete! Please navigate to " + filename + ".json to see results.\n")
     else: # no terms, scrape for all terms
         print("Beginning scraping for all terms...\n")
+        import os
+        print(os.getcwd())
         with open("Scraped_Transcript_All_Terms.json", "w") as file:
             minervascrape(values, term, year, transcript_table, gpa_available, terms, file)
             print("Scraping complete! Please navigate to Scraped_Transcript_All_Terms.json to see results.\n")

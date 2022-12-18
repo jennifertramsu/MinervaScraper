@@ -4,25 +4,29 @@ import json
 import pandas as pd
 from dotenv import load_dotenv
 
-# scrapers 
+# Scrapers 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+# Chrome
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
+# Edge
 from selenium.webdriver.edge.service import Service as EdgeService
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
+# Firefox
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.firefox import GeckoDriverManager
 
+# Brave
 from selenium.webdriver.chrome.service import Service as BraveService
 from webdriver_manager.core.utils import ChromeType
 
-# email stuff
+# Email?
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -69,6 +73,7 @@ def load_browser(browser):
     elif browser == "BRAVE":
         # initialize Brave driver
         options = webdriver.ChromeOptions()
+        options.binary_location = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
         options.headless = True
         
         service = BraveService(ChromeDriverManager(path="../Drivers", chrome_type=ChromeType.BRAVE).install())
@@ -130,23 +135,23 @@ def load_page(f=None):
 
     if login_by_ID:
         # retrieving username field and sending username
-        driver.find_element_by_id("UserID").send_keys(sid)
+        driver.find_element(By.ID, "UserID").send_keys(sid)
 
         # retrieving password field and sending passowrd
-        driver.find_element_by_id("PIN").send_keys(pin)
+        driver.find_element(By.ID, "PIN").send_keys(pin)
         
         # clicking login button
-        driver.find_element_by_id("mcg_id_submit").click()
+        driver.find_element(By.ID, "mcg_id_submit").click()
         
     else:
         # retrieving username field and sending username
-        driver.find_element_by_id("mcg_un").send_keys(username)
+        driver.find_element(By.ID, "mcg_un").send_keys(username)
 
         # retrieving password field and sending passowrd
-        driver.find_element_by_id("mcg_pw").send_keys(password)
+        driver.find_element(By.ID, "mcg_pw").send_keys(password)
 
         # clicking login button
-        driver.find_element_by_id("mcg_un_submit").click()
+        driver.find_element(By.ID, "mcg_un_submit").click()
 
     # dealing with incorrect credentials (verifying successful login)
 
@@ -157,7 +162,7 @@ def load_page(f=None):
     )
 
     try:
-        errors = driver.find_element_by_name("web_stop")
+        errors = driver.find_element(By.NAME, "web_stop")
         f.write('Login failed.')
         raise ValueError('Login failed.')
     except: # login successful
@@ -175,10 +180,10 @@ def load_page(f=None):
         WebDriverWait(driver=driver, timeout=10).until(lambda x : x.execute_script("return document.readyState === 'complete'"))
 
     # scrape for grades
-    transcript_table = driver.find_elements_by_class_name("dedefault")
+    transcript_table = driver.find_elements(By.CLASS_NAME, "dedefault")
 
     try:
-        gpa_available = driver.find_elements_by_class_name("infotext")[1]
+        gpa_available = driver.find_element(By.CLASS_NAME, "infotext")[1]
     except:
         gpa_available = None
     
@@ -247,7 +252,7 @@ def minervascrape(values, term, year, transcript_table, gpa_available, terms, fi
             if "Advanced" in transcript_table[j].text:
                 # grab term gpa
                 l = j
-                table = transcript_table[l].find_elements_by_class_name("dedefault")
+                table = transcript_table[l].find_elements(By.CLASS_NAME, "dedefault")
                 for m in range(len(table)):
                     while "TERM GPA" not in table[m].text:
                         m += 1
@@ -256,7 +261,9 @@ def minervascrape(values, term, year, transcript_table, gpa_available, terms, fi
                     #d.append(c)
                     break
                 break    
-            elif "Standing" in transcript_table[j].text and gpa == 0:
+            elif "Standing" in transcript_table[j].text:
+                # if gpa == 0: # return to this when gpa isn't available
+                    #break
                 break
             course_code = transcript_table[j].text
             if "RW" in transcript_table[j - 1].text:
@@ -471,16 +478,6 @@ def send_email(changes):
         server.login(sender_email, sender_email_password)
         server.sendmail(sender_email, receiver_email, message.as_string())
         server.quit()
-
-def update_driver(browser):
-    print('in progress...')
-
-    if browser == "CHROME":
-        print()
-    elif browser == "EDGE":
-        print()
-    elif browser == "FIREFOX":
-        print()
 
 ##### ARCHIVE #####
 
