@@ -29,7 +29,7 @@
 
         LOGIN={0, 1}
 
-        BROWSER={CHROME, EDGE, FIREFOX}
+        BROWSER={CHROME, EDGE, FIREFOX, BRAVE}
 
         MCGILLID={insert ID here} # can exclude if LOGIN=0
         MINERVAPIN={insert PIN here} # can exclude if LOGIN=0
