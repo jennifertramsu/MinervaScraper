@@ -5,16 +5,9 @@
 ## Usage
 
 ### Requirements
-<p> This program currently supports three browsers: <b> Chrome, Edge, and Firefox </b>. Depending on your browser of interest, download the appropriate webdriver from the links below: </p>
+<p> This program currently supports four browsers: <b> Chrome, Edge, Firefox, and Brave </b>. Your browser of interest should be indicated in the .env file. This script now supports webdriver-manager functionalities, and so the drivers' version is automatically checked and updated when the script is called. All drivers are saved in the folder Drivers.
 
-<ul> 
-    <li> <a href=https://chromedriver.chromium.org/downloads> Chrome</a> </li>
-    <li> <a href=https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/> Edge </a> </li>
-    <li> <a href=https://github.com/mozilla/geckodriver/releases> Firefox</a> </li>
-    <li> <a href=https://chromedriver.chromium.org/downloads> Brave</a> </li>
-</ul>
-
-<p> Once downloaded, save in Minerva's parent directory. To download all required dependencies, navigate to Minerva's parent directory and pip install requirements.txt. </p>
+<p> To download all required dependencies, navigate to Minerva's parent directory and pip install requirements.txt. </p>
 
         pip install -r requirements.txt
 
@@ -44,7 +37,7 @@
         
         NAME={Your name, so it feels a bit more personalized when email addresses you :D}
 
-<p> For security reasons, it's recommended to create a throwaway email account and use its credentials for EMAIL and PASS. If using gmail, the configuration that allows 3rd party applications to access the throwaway account will have to be enabled. </p>
+<p> For security reasons, it's recommended to create a throwaway email account and use its credentials for EMAIL and PASS. This script was tested using GMAIL. As Google no longer allows access from insecure sources (valid), an App Password must be generated under 2FA. </p>
 
 <h3> MinervaScrape </h3>
 
