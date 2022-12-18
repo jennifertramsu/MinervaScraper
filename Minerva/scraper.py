@@ -9,7 +9,18 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from msedge.selenium_tools import EdgeOptions, Edge
+
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+
+from selenium.webdriver.edge.service import Service as EdgeService
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
+
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from webdriver_manager.firefox import GeckoDriverManager
+
+from selenium.webdriver.chrome.service import Service as BraveService
+from webdriver_manager.core.utils import ChromeType
 
 # email stuff
 import smtplib, ssl
@@ -33,27 +44,36 @@ def load_browser(browser):
     if browser == "CHROME":
         # initialize Chrome driver
         options = webdriver.ChromeOptions()
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
         options.headless = True
         
-        driver = webdriver.Chrome(executable_path='../chromedriver.exe', options=options)
+        service = ChromeService(executable_path=ChromeDriverManager(path="../Drivers").install())
+        driver = webdriver.Chrome(service=service, options=options)
 
     elif browser == "EDGE":
         # initialize MsEdge driver
-        options = EdgeOptions()
-        options.use_chromium = True
-        options.add_argument("--headless")
-        options.add_argument("disable-gpu")
+        options = webdriver.EdgeOptions()
+        options.headless = True
 
-        driver = Edge(executable_path = '../msedgedriver.exe', options=options)
+        service = EdgeService(EdgeChromiumDriverManager(path="../Drivers").install())
+        driver = webdriver.Edge(service=service, options=options)
 
     elif browser == "FIREFOX":
         # initialize Firefox driver
         options = webdriver.FirefoxOptions()
         options.headless = True
+
+        service = FirefoxService(GeckoDriverManager(path="../Drivers").install())
         
-        driver = webdriver.Firefox(executable_path='../geckodriver.exe', options=options, service_log_path=os.devnull)
+        driver = webdriver.Firefox(service=service, options=options)
     
+    elif browser == "BRAVE":
+        # initialize Brave driver
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        
+        service = BraveService(ChromeDriverManager(path="../Drivers", chrome_type=ChromeType.BRAVE).install())
+        driver = webdriver.Chrome(service=service, options=options)
+
     else:
         raise ValueError("Incompatible browser! Start a GitHub issue to request this browser.")
 

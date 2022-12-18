@@ -1,0 +1,30 @@
+{
+    "linux64_edgedriver_108.0.1462_for_None": {
+        "timestamp": "17/12/2022",
+        "binary_path": "../Drivers/.wdm/drivers/edgedriver/linux64/108.0.1462/msedgedriver"
+    },
+    "linux64_chromedriver_108_for_None": {
+        "timestamp": "17/12/2022",
+        "binary_path": "../Drivers/.wdm/drivers/chromedriver/linux64/108/chromedriver"
+    },
+    "linux64_chromedriver_108.0.5359_for_None": {
+        "timestamp": "18/12/2022",
+        "binary_path": "../Drivers/.wdm/drivers/chromedriver/linux64/108.0.5359/chromedriver"
+    },
+    "win32_chromedriver_108.0.5359_for_108.0.5359": {
+        "timestamp": "18/12/2022",
+        "binary_path": "../Drivers\\.wdm\\drivers\\chromedriver\\win32\\108.0.5359\\chromedriver.exe"
+    },
+    "win64_edgedriver_108.0.1462_for_108.0.1462": {
+        "timestamp": "18/12/2022",
+        "binary_path": "../Drivers\\.wdm\\drivers\\edgedriver\\win64\\108.0.1462\\msedgedriver.exe"
+    },
+    "win32_chromedriver_108_for_108": {
+        "timestamp": "18/12/2022",
+        "binary_path": "../Drivers\\.wdm\\drivers\\chromedriver\\win32\\108\\chromedriver.exe"
+    },
+    "win64_geckodriver_0.32_for_108.0": {
+        "timestamp": "18/12/2022",
+        "binary_path": "../Drivers\\.wdm\\drivers\\geckodriver\\win64\\0.32\\geckodriver.exe"
+    }
+}

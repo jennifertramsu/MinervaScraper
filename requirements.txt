@@ -1,4 +1,4 @@
-pandas==1.2.4
-python-dotenv==0.17.1
-selenium==3.141.0
-msedge-selenium-tools==3.141.3
+pandas
+python-dotenv
+selenium
+webdriver-manager
