@@ -11,6 +11,7 @@
     <li> <a href=https://chromedriver.chromium.org/downloads> Chrome</a> </li>
     <li> <a href=https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/> Edge </a> </li>
     <li> <a href=https://github.com/mozilla/geckodriver/releases> Firefox</a> </li>
+    <li> <a href=https://chromedriver.chromium.org/downloads> Brave</a> </li>
 </ul>
 
 <p> Once downloaded, save in Minerva's parent directory. To download all required dependencies, navigate to Minerva's parent directory and pip install requirements.txt. </p>
