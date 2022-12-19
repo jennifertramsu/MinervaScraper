@@ -99,7 +99,7 @@
     </ul>
 </ul>
 
-<p> When the scraper is enabled on a schedule, it now saves all output into a logfile ('minerva_log.txt'). </p>
+<p> When the scraper is enabled on a schedule, it saves all output into a logfile ('minerva_log.txt'). </p>
 
 ## To-Do:
 <ul>
