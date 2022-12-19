@@ -37,7 +37,7 @@
         
         NAME={Your name, so it feels a bit more personalized when email addresses you :D}
 
-<p> For security reasons, it's recommended to create a throwaway email account and use its credentials for EMAIL and PASS. This script was tested using GMAIL. As Google no longer allows access from insecure sources (valid), an App Password must be generated under 2FA. </p>
+<p> For security reasons, it's recommended to create a throwaway email account and use its credentials for EMAIL and PASS. This script was tested using GMAIL. As Google no longer allows access from insecure sources (valid), an App Password must be generated under <a href=https://www.emailsupport.us/blog/gmail-smtp-not-working/> 2FA </a>. </p>
 
 <h3> MinervaScrape </h3>
 
@@ -99,10 +99,10 @@
     </ul>
 </ul>
 
-<p> When the scraper is enabled on a schedule, it now saves all output into a logfile ('minerva_log.txt'). </p>
+<p> When the scraper is enabled on a schedule, it saves all output into a logfile ('minerva_log.txt'). </p>
 
 ## To-Do:
 <ul>
     <li> ¯\_(ツ)_/¯ </li>
-    <li> Find an alternative messaging system that isn't email bc security :/ </li>
+    <li> Find a better system to send periodic updates. </li>
 </ul>
