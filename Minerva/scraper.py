@@ -26,7 +26,7 @@ from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.chrome.service import Service as BraveService
 from webdriver_manager.core.utils import ChromeType
 
-# Email?
+# Email
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -399,32 +399,21 @@ def generate_html(df):
     Parameters
     ----------
     df : Pandas.DataFrame
-        Dataframe containing transcript changes.
+        Dataframe containing transcript current transcript.
         
     Returns
     -------
-    html : str
+    table : str
         HTML code to be embedded in email.
     '''
     
-    load_dotenv()
-    name = os.getenv("NAME")
-    
-    html = f'''<html>
-                    <head></head>
-                    <body>
-                        <p> Hi {name}, </p>
-                        </br>
-                        <p> Your transcript has updated on Minerva! View changes below: </p>
-                        </br>
-                        <table border="2">
-                            <tr>
-                                <th> Course Code </th>
-                                <th> Grade </th>
-                                <th> Course Average </th> 
-                            </tr>'''
-
-    table = ""
+    table = f'''
+                <table border="2">
+                    <tr>
+                        <th> Course Code </th>
+                        <th> Grade </th>
+                        <th> Course Average </th> 
+                    </tr>'''
 
     for col, item in df.iterrows():
         table += "<tr>"
@@ -433,10 +422,9 @@ def generate_html(df):
             table += "<th> " + i + " </th>"
         table += "</tr>"
         
-    html += table
-    html += '''</table></body></html>'''
+    table += '''</table>'''
     
-    return html
+    return table
 
 def send_email(changes):
     ''' Sends the email to notify transcript changes. Attaches an HTML formatted table containing all changes. 
@@ -453,6 +441,7 @@ def send_email(changes):
 
     smtp_server = "smtp.gmail.com"
 
+    name = os.getenv("NAME")
     sender_email = os.getenv("EMAIL")
     receiver_email = os.getenv("MYEMAIL")
     sender_email_password = os.getenv("PASS")
@@ -462,7 +451,17 @@ def send_email(changes):
     message["From"] = sender_email
     message["To"] = receiver_email
     
-    html = generate_html(changes)
+    html = f'''<html>
+                    <head></head>
+                    <body>
+                        <p> Hi {name}, </p>
+                        </br>
+                        <p> Your transcript has updated on Minerva! View changes below: </p>
+                        </br>'''
+    
+    html += generate_html(changes)
+
+    html += "</body></html>"
 
     message.attach(MIMEText(html, 'html'))
 
