@@ -66,5 +66,9 @@ def update():
 # Initialize scheduler
 scheduler = BackgroundScheduler(daemon=True)
 scheduler.add_job(update) # Start immediately on launch
-#scheduler.add_job(update, 'interval', minutes=20) # Testing scheduler after 20 minutes
+scheduler.add_job(update, 'cron', hour=0) # 12AM
+scheduler.add_job(update, 'cron', hour=9) # 9AM
+scheduler.add_job(update, 'cron', hour=12) # 12PM
+scheduler.add_job(update, 'cron', hour=18) # 6PM
+scheduler.add_job(update, 'cron', hour=21) # 9PM
 scheduler.start()
